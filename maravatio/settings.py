@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+from django.utils.translation import ugettext_lazy as _
+
+os.environ["LANGUAGE"] = 'es_MX'
 
 # Oscar's imports
 from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
@@ -54,7 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'compressor',
-    'widget_tweaks'
+    'widget_tweaks',
+    'paypal'
 ] + get_core_apps()
 
 SITE_ID = 1
@@ -102,6 +106,27 @@ TEMPLATES = [
         },
     },
 ]
+
+
+PAYPAL_API_USERNAME = 'backend2.muchaweb-facilitator_api1.gmail.com'
+PAYPAL_API_PASSWORD = '4UPPDRXCPHJRRY5C'
+PAYPAL_API_SIGNATURE = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAhdkOcwnyfie6A21NvoIfMCOcR.L'
+
+PAYPAL_CURRENCY = 'MXN'
+
+OSCAR_DEFAULT_CURRENCY = 'MXN'
+
+OSCAR_DASHBOARD_NAVIGATION.append(
+    {
+        'label': _('PayPal'),
+        'icon': 'icon-globe',
+        'children': [
+            {
+                'label': _('Express transactions'),
+                'url_name': 'paypal-express-list',
+            },
+        ]
+    })
 
 
 OSCAR_SHOP_NAME = 'TEQUILA HM'
@@ -166,7 +191,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'UTC'
 
@@ -182,3 +207,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR

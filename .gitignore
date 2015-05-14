@@ -1,3 +1,6 @@
 /.idea
 *.pyc
 db.maravatio
+/cache
+/images
+image_not_found.jpg
