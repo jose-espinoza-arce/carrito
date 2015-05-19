@@ -129,6 +129,9 @@ OSCAR_DASHBOARD_NAVIGATION.append(
     })
 
 
+THUMBNAIL_DEBUG = True
+
+
 OSCAR_SHOP_NAME = 'TEQUILA HM'
 OSCAR_SHOP_TAGLINE = 'THM EN LINEA'
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'
@@ -206,7 +209,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/webapps/maravatio/static'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR
+MEDIA_ROOT = '/webapps/maravatio/media'
