@@ -10,7 +10,8 @@ from django.conf.urls.static import static
 urlpatterns = patterns('',
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^admin/', include(admin.site.urls)),
-    (r'^checkout/paypal/', include('paypal.express.urls')),
-    (r'^dashboard/paypal/express/', include(paypalapp.urls)),
+    #url(r'^checkout/paypal/', include('paypal.express.urls')),
+    #url(r'^dashboard/paypal/express/', include(paypalapp.urls)),
     url(r'', include(application.urls)),
+    url(r'^cmproducts/', include('cmproducts.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

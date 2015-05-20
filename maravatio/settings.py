@@ -58,7 +58,11 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'compressor',
     'widget_tweaks',
-    'paypal'
+    'paypal',
+    'cmproducts',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken'
 ] + get_core_apps()
 
 SITE_ID = 1
@@ -108,25 +112,51 @@ TEMPLATES = [
 ]
 
 
-PAYPAL_API_USERNAME = 'backend2.muchaweb-facilitator_api1.gmail.com'
-PAYPAL_API_PASSWORD = '4UPPDRXCPHJRRY5C'
-PAYPAL_API_SIGNATURE = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAhdkOcwnyfie6A21NvoIfMCOcR.L'
+#Cors settings
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITE_LIST = (
+    'google.com',
+)
+
+#RESTFRAMEWORK settings
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+#Oscar Settings
+#PAYPAL_API_USERNAME = 'backend2.muchaweb-facilitator_api1.gmail.com'
+#PAYPAL_API_PASSWORD = '4UPPDRXCPHJRRY5C'
+#PAYPAL_API_SIGNATURE = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAhdkOcwnyfie6A21NvoIfMCOcR.L'
+
+PAYPAL_PAYFLOW_VENDOR_ID = 'RH3VFB4DGXFYW'
+
+PAYPAL_PAYFLOW_PASSWORD = 'Back2014'
 
 PAYPAL_CURRENCY = 'MXN'
 
 OSCAR_DEFAULT_CURRENCY = 'MXN'
 
-OSCAR_DASHBOARD_NAVIGATION.append(
-    {
-        'label': _('PayPal'),
-        'icon': 'icon-globe',
-        'children': [
-            {
-                'label': _('Express transactions'),
-                'url_name': 'paypal-express-list',
-            },
-        ]
-    })
+#OSCAR_DASHBOARD_NAVIGATION.append(
+#    {
+#        'label': _('PayPal'),
+#        'icon': 'icon-globe',
+#        'children': [
+#            {
+#                'label': _('Express transactions'),
+#                'url_name': 'paypal-express-list',
+#            },
+#        ]
+#    })
 
 
 OSCAR_SHOP_NAME = 'TEQUILA HM'
@@ -142,12 +172,14 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
 )
