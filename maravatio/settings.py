@@ -58,12 +58,13 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'compressor',
     'widget_tweaks',
-    'paypal',
+    #'paypal',
     'cmproducts',
     'corsheaders',
+    #'maravatioapp',
     'rest_framework',
     'rest_framework.authtoken'
-] + get_core_apps()
+] + get_core_apps(['checkout'])
 
 SITE_ID = 1
 
@@ -142,7 +143,7 @@ PAYPAL_PAYFLOW_VENDOR_ID = 'RH3VFB4DGXFYW'
 
 PAYPAL_PAYFLOW_PASSWORD = 'Back2014'
 
-PAYPAL_CURRENCY = 'MXN'
+PAYPAL_PAYFLOW_CURRENCY = 'MXN'
 
 OSCAR_DEFAULT_CURRENCY = 'MXN'
 
@@ -242,3 +243,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR
+
+from oscar.defaults import *
