@@ -1,0 +1,9 @@
+{% load currency_filters %}
+{% load i18n %}
+
+{% blocktrans with cost=charge_per_item|currency %}
+Su pedido se le será entregado personálmente en alguno de nuestros establecimientos.
+<p>
+    No se genera ningún costo.
+</p>
+{% endblocktrans %}

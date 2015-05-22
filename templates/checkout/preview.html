@@ -1,4 +1,5 @@
 {% extends "checkout/checkout.html" %}
+{% load currency_filters %}
 {% load i18n %}
 
 {% block title %}
@@ -13,6 +14,42 @@
     {% trans "Preview order" %}
 {% endblock %}
 
+{% block payment_method %}
+    <div class="span6">
+    <h3>{% trans "Payment" %}</h3>
+    <div class="well well-success" data-behaviours="match-height">
+
+        <h4>Bankcard</h4>
+        <p>{% blocktrans with amount=order_total.incl_tax|currency %}
+            {{ amount }} will be debited from your bankcard:
+        {% endblocktrans %}</p>
+        {% with bankcard=bankcard_form.bankcard %}
+            <p>
+            {% trans "Card type" %}: {{ bankcard.card_type }} <br/>
+            {% trans "Card number" %}: {{ bankcard.obfuscated_number }} <br/>
+            {% trans "Expiry month" %}: {{ bankcard.expiry_month }}</p>
+        {% endwith %}
+
+        <h4>Billing address</h4>
+        <p>
+        {% for field in billing_address.active_address_fields %}
+            {{ field }}<br/>
+        {% endfor %}
+            </p>
+            {% if billing_address.phone_number %}
+                <p>{% trans "Contact number" %}: {{ billing_address.phone_number }}</p>
+        {% endif %}
+
+        <div class="alert-actions">
+            <a href="{% url 'checkout:payment-details' %}" class="btn">{% trans "Change payment details" %}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
 {% block place_order %}
     <form method="post" action="{% url 'checkout:preview' %}" id="place_order_form">
         {% csrf_token %}
@@ -25,7 +62,7 @@
             get re-submitted when the user confirms the order.
         {% endcomment %}
         <div style="display:none">
-            {% block hiddenforms %}{% endblock %}
+            {% block hiddenforms %}{{ bankcard_form }} {{ billing_address_form }}{% endblock %}
         </div>
 
         <div class="form-actions clearfix">

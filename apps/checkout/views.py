@@ -39,63 +39,63 @@ class PaymentDetailsView(views.PaymentDetailsView):
                 'billing_address_form'].save(commit=False)
         return ctx
 
-    def get_billing_address_form(self, shipping_address):
-        """
-        Return an instantiated billing address form
-        """
-        addr = self.get_default_billing_address()
-        if not addr:
-            return BillingAddressForm(shipping_address=shipping_address)
-        billing_addr = BillingAddress()
-        addr.populate_alternative_model(billing_addr)
-        return BillingAddressForm(shipping_address=shipping_address,
-                                  instance=billing_addr)
+    # def get_billing_address_form(self, shipping_address):
+    #     """
+    #     Return an instantiated billing address form
+    #     """
+    #     addr = self.get_default_billing_address()
+    #     if not addr:
+    #         return BillingAddressForm(shipping_address=shipping_address)
+    #     billing_addr = BillingAddress()
+    #     addr.populate_alternative_model(billing_addr)
+    #     return BillingAddressForm(shipping_address=shipping_address,
+    #                               instance=billing_addr)
 
-    def handle_payment_details_submission(self, request):
-        # Validate the submitted forms
-        bankcard_form = BankcardForm(request.POST)
-        shipping_address = self.get_shipping_address(
-            self.request.basket)
-        address_form = BillingAddressForm(shipping_address, request.POST)
+    # def handle_payment_details_submission(self, request):
+    #     # Validate the submitted forms
+    #     bankcard_form = BankcardForm(request.POST)
+    #     shipping_address = self.get_shipping_address(
+    #         self.request.basket)
+    #     address_form = BillingAddressForm(shipping_address, request.POST)
+    #
+    #     if address_form.is_valid() and bankcard_form.is_valid():
+    #         # If both forms are valid, we render the preview view with the
+    #         # forms hidden within the page. This seems odd but means we don't
+    #         # have to store sensitive details on the server.
+    #         return self.render_preview(
+    #             request, bankcard_form=bankcard_form,
+    #             billing_address_form=address_form)
+    #
+    #     # Forms are invalid - show them to the customer along with the
+    #     # validation errors.
+    #     return self.render_payment_details(
+    #         request, bankcard_form=bankcard_form,
+    #         billing_address_form=address_form)
 
-        if address_form.is_valid() and bankcard_form.is_valid():
-            # If both forms are valid, we render the preview view with the
-            # forms hidden within the page. This seems odd but means we don't
-            # have to store sensitive details on the server.
-            return self.render_preview(
-                request, bankcard_form=bankcard_form,
-                billing_address_form=address_form)
-
-        # Forms are invalid - show them to the customer along with the
-        # validation errors.
-        return self.render_payment_details(
-            request, bankcard_form=bankcard_form,
-            billing_address_form=address_form)
-
-    def handle_place_order_submission(self, request):
-        bankcard_form = BankcardForm(request.POST)
-        shipping_address = self.get_shipping_address(
-            self.request.basket)
-        address_form = BillingAddressForm(shipping_address, request.POST)
-        if address_form.is_valid() and bankcard_form.is_valid():
-            # Forms still valid, let's submit an order
-            submission = self.build_submission(
-                order_kwargs={
-                    'billing_address': address_form.save(commit=False),
-                },
-                payment_kwargs={
-                    'bankcard_form': bankcard_form,
-                    'billing_address_form': address_form
-                }
-            )
-            return self.submit(**submission)
-
-        # Must be DOM tampering as these forms were valid and were rendered in
-        # a hidden element.  Hence, we don't need to be that friendly with our
-        # error message.
-        messages.error(request, _("Invalid submission"))
-        return http.HttpResponseRedirect(
-            reverse('checkout:payment-details'))
+    # def handle_place_order_submission(self, request):
+    #     bankcard_form = BankcardForm(request.POST)
+    #     shipping_address = self.get_shipping_address(
+    #         self.request.basket)
+    #     address_form = BillingAddressForm(shipping_address, request.POST)
+    #     if address_form.is_valid() and bankcard_form.is_valid():
+    #         # Forms still valid, let's submit an order
+    #         submission = self.build_submission(
+    #             order_kwargs={
+    #                 'billing_address': address_form.save(commit=False),
+    #             },
+    #             payment_kwargs={
+    #                 'bankcard_form': bankcard_form,
+    #                 'billing_address_form': address_form
+    #             }
+    #         )
+    #         return self.submit(**submission)
+    #
+    #     # Must be DOM tampering as these forms were valid and were rendered in
+    #     # a hidden element.  Hence, we don't need to be that friendly with our
+    #     # error message.
+    #     messages.error(request, _("Invalid submission"))
+    #     return http.HttpResponseRedirect(
+    #         reverse('checkout:payment-details'))
 
     def handle_payment(self, order_number, total, **kwargs):
         # Make request to DataCash - if there any problems (eg bankcard

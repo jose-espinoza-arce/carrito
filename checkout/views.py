@@ -40,6 +40,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
         #print ctx
         return ctx
 
+
     def get_billing_address_form(self, shipping_address):
         """
         Return an instantiated billing address form
@@ -52,12 +53,32 @@ class PaymentDetailsView(views.PaymentDetailsView):
         return BillingAddressForm(shipping_address=shipping_address,
                                   instance=billing_addr)
 
+    def post(self, request, *args, **kwargs):
+        # Posting to payment-details isn't the right thing to do.  Form
+        # submissions should use the preview URL.
+        if not self.preview:
+            return http.HttpResponseBadRequest()
+
+        # We use a custom parameter to indicate if this is an attempt to place
+        # an order (normally from the preview page).  Without this, we assume a
+        # payment form is being submitted from the payment details view. In
+        # this case, the form needs validating and the order preview shown.
+        if request.POST.get('action', '') == 'place_order':
+            #print 'place order'
+            #print request.POST
+            return self.handle_place_order_submission(request)
+        #print 'submitting'
+        return self.handle_payment_details_submission(request)
+
+
     def handle_payment_details_submission(self, request):
         # Validate the submitted forms
         bankcard_form = BankcardForm(request.POST)
         shipping_address = self.get_shipping_address(
             self.request.basket)
         address_form = BillingAddressForm(shipping_address, request.POST)
+        #print address_form.is_valid()
+        #print bankcard_form.is_valid()
 
         if address_form.is_valid() and bankcard_form.is_valid():
             # If both forms are valid, we render the preview view with the
@@ -77,8 +98,14 @@ class PaymentDetailsView(views.PaymentDetailsView):
         bankcard_form = BankcardForm(request.POST)
         shipping_address = self.get_shipping_address(
             self.request.basket)
+        #print request.POST
         address_form = BillingAddressForm(shipping_address, request.POST)
-        print address_form #ankcard_form
+        #print 'handling order submision'
+        #print address_form.is_valid()
+        #print address_form.__dict__
+
+        #a = bankcard_form.is_valid()
+        #print a
         if address_form.is_valid() and bankcard_form.is_valid():
             # Forms still valid, let's submit an order
             submission = self.build_submission(
@@ -90,24 +117,29 @@ class PaymentDetailsView(views.PaymentDetailsView):
                     'billing_address_form': address_form
                 }
             )
+            print 'about to submit'
             return self.submit(**submission)
-
         # Must be DOM tampering as these forms were valid and were rendered in
         # a hidden element.  Hence, we don't need to be that friendly with our
         # error message.
+        print 'invalid submision'
         messages.error(request, _("Invalid submission"))
         return http.HttpResponseRedirect(
             reverse('checkout:payment-details'))
 
+
+
+
     def handle_payment(self, order_number, total, **kwargs):
-        # Make request to DataCash - if there any problems (eg bankcard
+        # Make request to PayPal - if there any problems (eg bankcard
         # not valid / request refused by bank) then an exception would be
         # raised and handled by the parent PaymentDetail view)
         #facade = Facade()
         bankcard = kwargs['bankcard_form'].bankcard
+        ##
         paypal_ref = authorize(
             order_number, total.incl_tax, bankcard)
-
+        print 'en el handle payment'
         # Request was successful - record the "payment source".  As this
         # request was a 'pre-auth', we set the 'amount_allocated' - if we had
         # performed an 'auth' request, then we would set 'amount_debited'.
