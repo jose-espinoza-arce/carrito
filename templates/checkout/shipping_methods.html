@@ -21,15 +21,18 @@
 {% block shipping_method %}
 
     <div role="tabpanel">
-    <ul class="nav nav-tabs" role="tablist">
-    {% for method in methods %}
-        <li role="presentation" {% if method.code == 'personal' %}class="active"{% endif %}>
-            <a href="#{{ method.code }}" aria-controls="{{ method.code }}" role="tab" data-toggle="tab">{{ method.name }}</a>
-        </li>
-    {% endfor %}
-    </ul>
-    </div>
-    <div class="tab-content">
+    <div class="">
+        <div class="span2">
+           <ul class="nav nav-pills nav-stacked" role="tablist">
+             {% for method in methods %}
+                <li role="presentation" {% if method.code == 'personal' %}class="active"{% endif %}>
+                   <a href="#{{ method.code }}" aria-controls="{{ method.code }}" role="tab" data-toggle="tab">{{ method.name }}</a>
+                </li>
+             {% endfor %}
+           </ul>
+        </div>
+        <div class="span6">
+            <div class="tab-content">
     <div class="basket-title">
         <div class="row-fluid">
             <h4 class="span8">{% trans "Method" %}</h4>
@@ -75,4 +78,9 @@
         </div>
     {% endfor %}
     </div>
+        </div>
+    </div>
+
+    </div>
+
 {% endblock shipping_method %}
