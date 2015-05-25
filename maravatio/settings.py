@@ -59,12 +59,12 @@ INSTALLED_APPS = [
     'compressor',
     'widget_tweaks',
     #'paypal',
-    'cmproducts',
+    'dashboard.cmproducts',
     'corsheaders',
     #'maravatioapp',
     'rest_framework',
     'rest_framework.authtoken'
-] + get_core_apps(['checkout', 'shipping', 'catalogue'])
+] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard', 'dashboard.catalogue'])
 
 SITE_ID = 1
 
@@ -280,6 +280,11 @@ OSCAR_DASHBOARD_NAVIGATION = [
             #    'url_name': 'dashboard:stock-alert-list',
             #},
         ]
+    },
+    {
+        'label': _('Plantillas'),
+        'icon': 'icon-bar-chart',
+        'url_name': 'dashboard:plantilla',
     },
 ]
 
