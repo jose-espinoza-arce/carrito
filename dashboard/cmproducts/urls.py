@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 #from django.contrib import admin
 from dashboard.cmproducts.views import TequilaTypeViewSet, EventTypeViewSet, \
-                            BoxPresentationViewSet, TemplateViewSet, CustomImageViewSet, PlantillaView
+                            BoxPresentationViewSet, TemplateViewSet, CustomImageViewSet
 from rest_framework import routers, serializers, viewsets
 from rest_framework import status
 from rest_framework.response import Response

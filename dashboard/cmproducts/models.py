@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 import os
 
+import StringIO
+from PIL import Image
+
 class TequilaType(models.Model):
     name = models.CharField(max_length=60)
     bimage = models.ImageField(
@@ -25,12 +28,28 @@ class EventType(models.Model):
 
 
 class Template(models.Model):
-    name = models.CharField(max_length=60)
-    etype = models.ForeignKey('EventType', default=1, related_name='templates')
+    name = models.CharField(max_length=60, verbose_name='Nombre')
+    etype = models.ForeignKey('EventType', default=1, related_name='templates', verbose_name='Tipo de evento', )
     timage = models.ImageField(
+        verbose_name='Plantilla',
         upload_to='images/templates/',
         default=os.path.join(settings.STATIC_ROOT, 'generic_profile_image.png'),
     )
+
+
+    def save(self, *args, **kwargs):
+        super(Template, self).save(*args, **kwargs)
+        if self.timage:
+            fileimage = str(self.timage.path)
+            img = Image.open(fileimage)
+            newW = 323
+            newH = 323 * self.timage.height/self.timage.width
+            img = img.resize((newW, newH), Image.ANTIALIAS)
+            img.save(fileimage)
+
+
+
+
 
     def __unicode__(self):
         return self.name

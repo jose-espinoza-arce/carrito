@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     #'maravatioapp',
     'rest_framework',
     'rest_framework.authtoken'
-] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard', 'dashboard.catalogue'])
+] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard', 'dashboard.catalogue', 'dashboard.orders'])
 
 SITE_ID = 1
 
@@ -282,9 +282,14 @@ OSCAR_DASHBOARD_NAVIGATION = [
         ]
     },
     {
+        'label': _('Eventos'),
+        'icon': 'icon-glass',
+        'url_name': 'dashboard:event-list',
+    },
+    {
         'label': _('Plantillas'),
-        'icon': 'icon-bar-chart',
-        'url_name': 'dashboard:plantilla',
+        'icon': 'icon-picture',
+        'url_name': 'dashboard:template-list',
     },
 ]
 
@@ -357,7 +362,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'es-mx'
+LANGUAGE_CODE = 'es_MX'
 
 TIME_ZONE = 'UTC'
 

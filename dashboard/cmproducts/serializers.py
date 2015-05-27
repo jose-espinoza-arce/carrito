@@ -1,11 +1,12 @@
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage
+from catalogue.models import ProductClass, Product
 from rest_framework import serializers
 
 
 class TequilaTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TequilaType
-        fields = ('id', 'name', 'bimage', 'maskimage',)
+        model = ProductClass
+        fields = ('id', 'name', 'bimage',)
 
 
 class TemplateSerializer(serializers.ModelSerializer):
@@ -24,8 +25,8 @@ class EventTypeSerializer(serializers.ModelSerializer):
 
 class BoxPresentationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BoxPresentation
-        fields = ('id', 'type', 'bottlesize', 'bottles',
+        model = Product
+        fields = ('id', 'product_class', 'categories', 'bottlesize', 'bottles',
                   'maxlabels', 'bottlerow', 'img_original_size',
                   'img_zoom_size', 'img_tag'
         )

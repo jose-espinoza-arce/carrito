@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage
 from dashboard.cmproducts.serializers import TequilaTypeSerializer, EventTypeSerializer, BoxPresentationSerializer, TemplateSerializer, CustomImageSerializer
+
+from catalogue.models import ProductClass, Product
 
 from rest_framework import viewsets
 from rest_framework import status
@@ -7,24 +10,36 @@ from rest_framework.response import Response
 
 from django.views import generic
 from django import forms
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+
 from django.shortcuts import render_to_response
 from oscar.apps.dashboard.catalogue.views import ProductCreateUpdateView
 
 #from cmproducts.models import TequilaType
 
-class PlantillaForm(forms.ModelForm):
+
+#-----------------FORMS---------
+class EventForm(forms.ModelForm):
     class Meta:
         model = EventType
         fields = '__all__'
 
 
+class TemplateForm(forms.ModelForm):
+    class Meta:
+        model = Template
+        fields = '__all__'
 
-class PlantillaView(generic.FormView):
+#----------------------------------------------
+
+class TemplateView(generic.FormView):
 
     success_url = '/dashboard/'
 
     template_name = 'cmproducts/types.html'
-    form_class = PlantillaForm
+    form_class = TemplateForm
     #model = TequilaType
 
     def form_valid(self, form):
@@ -32,11 +47,11 @@ class PlantillaView(generic.FormView):
 
         self.object.save()
 
-        return super(PlantillaView, self).form_valid(form)
+        return super(TemplateView, self).form_valid(form)
 
 
 class TequilaTypeViewSet(viewsets.ModelViewSet):
-    queryset = TequilaType.objects.all()
+    queryset = ProductClass.objects.all()
     serializer_class = TequilaTypeSerializer
 
 
@@ -47,7 +62,7 @@ class EventTypeViewSet(viewsets.ModelViewSet):
 
 
 class BoxPresentationViewSet(viewsets.ModelViewSet):
-    queryset = BoxPresentation.objects.all()
+    queryset = Product.objects.all()
     serializer_class = BoxPresentationSerializer
 
     def list(self, request, size_pk=None, *args, **kwargs):
@@ -103,3 +118,135 @@ class CustomImageViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         print serializer.data
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+
+#-------------------------------------------------------------------------------------
+
+class EventCreateView(generic.CreateView):
+    template_name = 'dashboard/cmproducts/event_form.html'
+    model = EventType
+    form_class = EventForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(EventCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = "Añadir un nuevo evento"
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Nuevo evento creado"))
+        return reverse("dashboard:event-list")
+
+
+class EventListView(generic.ListView):
+    template_name = 'dashboard/cmproducts/event_list.html'
+    context_object_name = 'classes'
+    model = EventType
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(EventListView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = _("Events")
+        return ctx
+
+
+class EventUpdateView(generic.UpdateView):
+    template_name = 'dashboard/cmproducts/event_form.html'
+    model = EventType
+    form_class = EventForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(EventUpdateView, self).get_context_data(**kwargs)
+        ctx['title'] = _("Actualizar evento '%s'") % self.object.name
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Product type update successfully"))
+        return reverse("dashboard:event-list")
+
+
+class EventDeleteView(generic.DeleteView):
+    template_name = 'dashboard/cmproducts/event_delete.html'
+    model = EventType
+    form_class = EventForm
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(EventDeleteView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = _("Eliminar evento '%s'") % self.object.name
+        #product_count = self.object.products.count()
+
+        #if product_count > 0:
+        #    ctx['disallow'] = True
+        #    ctx['title'] = _("Unable to delete '%s'") % self.object.name
+        #    messages.error(self.request,
+        #                   _("%i products are still assigned to this type") %
+        #                   product_count)
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Evento eliminado"))
+        return reverse("dashboard:event-list")
+
+
+
+class TemplateCreateView(generic.CreateView):
+    template_name = 'dashboard/cmproducts/template_form.html'
+    model = Template
+    form_class = TemplateForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(TemplateCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = "Añadir una plantilla nueva"
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Nueva plantilla creada"))
+        return reverse("dashboard:template-list")
+
+
+class TemplateListView(generic.ListView):
+    template_name = 'dashboard/cmproducts/template_list.html'
+    context_object_name = 'classes'
+    model = Template
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(TemplateListView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = _("Plantillas")
+        return ctx
+
+
+class TemplateUpdateView(generic.UpdateView):
+    template_name = 'dashboard/cmproducts/template_form.html'
+    model = Template
+    form_class = TemplateForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(TemplateUpdateView, self).get_context_data(**kwargs)
+        ctx['title'] = _("Actualizar plantilla '%s'") % self.object.name
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Plantilla actualizada"))
+        return reverse("dashboard:template-list")
+
+
+class TemplateDeleteView(generic.DeleteView):
+    template_name = 'dashboard/cmproducts/template_delete.html'
+    model = Template
+    form_class = TemplateForm
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(TemplateDeleteView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = _("Eliminar plantilla '%s'") % self.object.name
+        #product_count = self.object.products.count()
+
+        #if product_count > 0:
+        #    ctx['disallow'] = True
+        #    ctx['title'] = _("Unable to delete '%s'") % self.object.name
+        #    messages.error(self.request,
+        #                   _("%i products are still assigned to this type") %
+        #                   product_count)
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Plantilla eliminada"))
+        return reverse("dashboard:template-list")
+

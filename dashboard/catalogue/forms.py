@@ -9,7 +9,10 @@ from oscar.apps.dashboard.catalogue.forms import ProductForm as CoreProductForm,
 class ProductForm(CoreProductForm):
     class Meta:
         model = Product
-        fields = ['title', 'categories', 'structure'] #is_discountable, description, ups
+        fields = ['title', 'structure',
+                  'bottlesize', 'bottlerow', 'maxlabels',
+                  'bottles', 'img_original_size', 'img_zoom_size',
+                  'img_tag'] #is_discountable, description, ups
         widgets = {
             'structure': forms.HiddenInput()
         }
@@ -19,4 +22,4 @@ class ProductClassForm(CoreProductClassForm):
 
     class Meta:
         model = ProductClass
-        fields = ['name', 'imagen']#, 'requires_shipping', 'track_stock', 'options']
+        fields = ['name', 'bimage']#, 'requires_shipping', 'track_stock', 'options']
