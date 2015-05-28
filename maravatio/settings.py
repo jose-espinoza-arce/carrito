@@ -64,7 +64,8 @@ INSTALLED_APPS = [
     #'maravatioapp',
     'rest_framework',
     'rest_framework.authtoken'
-] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard', 'dashboard.catalogue', 'dashboard.orders'])
+] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard',
+                   'dashboard.catalogue', 'dashboard.orders', 'basket',])
 
 SITE_ID = 1
 

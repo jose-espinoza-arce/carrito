@@ -9,6 +9,8 @@ from oscar.apps.payment.forms import BankcardForm
 from oscar.apps.payment.models import SourceType
 from oscar.apps.order.models import BillingAddress
 
+from paypal.pro.forms import PaymentForm
+
 from .forms import BillingAddressForm
 
 
@@ -27,7 +29,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
         # address forms are passed to the template context (when they aren't
         # already specified).
         if 'bankcard_form' not in kwargs:
-            ctx['bankcard_form'] = BankcardForm()
+            ctx['bankcard_form'] = PaymentForm()
         if 'billing_address_form' not in kwargs:
             ctx['billing_address_form'] = self.get_billing_address_form(
                 ctx['shipping_address']
@@ -73,7 +75,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
 
     def handle_payment_details_submission(self, request):
         # Validate the submitted forms
-        bankcard_form = BankcardForm(request.POST)
+        bankcard_form = PaymentForm(request.POST)
         shipping_address = self.get_shipping_address(
             self.request.basket)
         address_form = BillingAddressForm(shipping_address, request.POST)
@@ -95,7 +97,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
             billing_address_form=address_form)
 
     def handle_place_order_submission(self, request):
-        bankcard_form = BankcardForm(request.POST)
+        bankcard_form = PaymentForm(request.POST)
         shipping_address = self.get_shipping_address(
             self.request.basket)
         #print request.POST
