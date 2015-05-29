@@ -19,15 +19,15 @@ class Product(AbstractProduct):
     bottlerow = models.PositiveSmallIntegerField(blank=True)
     img_original_size = models.ImageField(
         upload_to='images/catalogue/product/',
-        default=os.path.join(settings.STATIC_ROOT, 'generic_profile_image.png'),
+        default=os.path.join(settings.MEDIA_ROOT, 'generic_profile_image.png'),
     )
     img_zoom_size = models.ImageField(
         upload_to='images/catalogue/product',
-        default=os.path.join(settings.STATIC_ROOT, 'generic_profile_image.png'),
+        default=os.path.join(settings.MEDIA_ROOT, 'generic_profile_image.png'),
     )
     img_tag = models.ImageField(
         upload_to='images/catalogue/product',
-        default=os.path.join(settings.STATIC_ROOT, 'generic_profile_image.png'),
+        default=os.path.join(settings.MEDIA_ROOT, 'generic_profile_image.png'),
     )
     #type = models.ForeignKey('TequilaType', default=1, related_name='sizes')
 
