@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'compressor',
     'widget_tweaks',
-    #'paypal',
+    'paypal.standard',
+    'paypal.pro',
     'dashboard.cmproducts',
     'corsheaders',
     #'maravatioapp',
@@ -135,16 +136,24 @@ REST_FRAMEWORK = {
     )
 }
 
+#paypal settings
+PAYPAL_TEST = True
+PAYPAL_DEBUG = True
+PAYPAL_WPP_USER = "eangel82_api1.gmail.com"
+PAYPAL_WPP_PASSWORD = "SSJNL5LK3DKS6FQJ"
+PAYPAL_WPP_SIGNATURE = "AFcWxV21C7fd0v3bYYYRCpSSRl31AEEsFlFVBPdnukiFEivDPqwaMeJr"
+PAYPAL_RECEIVER_EMAIL = 'backend2.muchaweb@gmail.com'
+
 #Oscar Settings
 #PAYPAL_API_USERNAME = 'backend2.muchaweb-facilitator_api1.gmail.com'
 #PAYPAL_API_PASSWORD = '4UPPDRXCPHJRRY5C'
 #PAYPAL_API_SIGNATURE = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAhdkOcwnyfie6A21NvoIfMCOcR.L'
 
-PAYPAL_PAYFLOW_VENDOR_ID = 'RH3VFB4DGXFYW'
+#PAYPAL_PAYFLOW_VENDOR_ID = 'RH3VFB4DGXFYW'
 
-PAYPAL_PAYFLOW_PASSWORD = 'Back2014'
+#PAYPAL_PAYFLOW_PASSWORD = 'Back2014'
 
-PAYPAL_PAYFLOW_CURRENCY = 'MXN'
+#PAYPAL_PAYFLOW_CURRENCY = 'MXN'
 
 OSCAR_DEFAULT_CURRENCY = 'MXN'
 
