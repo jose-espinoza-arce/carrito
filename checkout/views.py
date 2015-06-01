@@ -289,11 +289,15 @@ class PaymentDetailsView(views.PaymentDetailsView):
         #facade = Facade()
         print 'hndle peyment'
         #print kwargs['bankcard_form']['acct'].value()
-        params = kwargs['paypal_form']
-        print params.cleaned_data
+        item = {
+            'invnum': order_number,
+            'amt': total.incl_tax
+        }
+        success = kwargs['paypal_form'].process(self.request, item)
+        print success
         #print bankcard
         #order_number, paypal, amt=total.incl_tax
-        paypalwpp = PayPalWPP()
+        #paypalwpp = PayPalWPP()
 
         print 'en el handle payment'
         # Request was successful - record the "payment source".  As this

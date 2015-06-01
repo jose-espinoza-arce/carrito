@@ -24,7 +24,7 @@ class PaymentForm(forms.Form):
     def process(self, request, item):
         """Process a PayPal direct payment."""
         from paypal.pro.helpers import PayPalWPP
-
+        print 'in process'
         wpp = PayPalWPP(request)
         params = self.cleaned_data
         params['creditcardtype'] = self.fields['acct'].card_type
@@ -35,7 +35,9 @@ class PaymentForm(forms.Form):
         try:
             # Create single payment:
             if 'billingperiod' not in params:
+                print 'before dodirectpayment'
                 nvp_obj = wpp.doDirectPayment(params)
+                #print nvp_obj
             # Create recurring payment:
             else:
                 nvp_obj = wpp.createRecurringPaymentsProfile(params, direct=True)
