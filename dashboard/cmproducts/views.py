@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage
-from dashboard.cmproducts.serializers import TequilaTypeSerializer, EventTypeSerializer, BoxPresentationSerializer, TemplateSerializer, CustomImageSerializer
+from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage, Tag
+from dashboard.cmproducts.serializers import TequilaTypeSerializer, \
+    EventTypeSerializer, BoxPresentationSerializer, \
+    TemplateSerializer, CustomImageSerializer, TagSerializer
 
 from catalogue.models import ProductClass, Product
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 from rest_framework import viewsets
 from rest_framework import status
@@ -14,6 +18,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
+import json
 from django.shortcuts import render_to_response
 from oscar.apps.dashboard.catalogue.views import ProductCreateUpdateView
 
@@ -49,6 +54,29 @@ class TemplateView(generic.FormView):
 
         return super(TemplateView, self).form_valid(form)
 
+@csrf_exempt
+def TagBlob(request):
+    if request.method == 'POST':
+        #base64_string = request.order
+        #print base64_string
+        print request.is_ajax()
+        data = json.loads(request.body)
+        serializer = TagSerializer(data=data['item'])
+
+        #print data['item']['tag']
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        #serializer.
+        #print serializer.to_internal_value(data=data['item'])
+
+        return HttpResponse('<h1>Image successfully saved!</h1>')
+
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
 
 class TequilaTypeViewSet(viewsets.ModelViewSet):
     queryset = ProductClass.objects.all()
@@ -65,9 +93,9 @@ class BoxPresentationViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = BoxPresentationSerializer
 
-    def list(self, request, size_pk=None, *args, **kwargs):
-        if size_pk:
-            queryset = self.queryset.filter(type_id=size_pk)
+    def list(self, request, type_pk=None, *args, **kwargs):
+        if type_pk:
+            queryset = self.queryset.filter(product_class_id=type_pk)
         else:
             queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)

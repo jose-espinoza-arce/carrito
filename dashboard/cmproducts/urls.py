@@ -1,7 +1,10 @@
 from django.conf.urls import include, url
 #from django.contrib import admin
 from dashboard.cmproducts.views import TequilaTypeViewSet, EventTypeViewSet, \
-                            BoxPresentationViewSet, TemplateViewSet, CustomImageViewSet
+                            BoxPresentationViewSet, TemplateViewSet, \
+                            CustomImageViewSet, TagViewSet, TagBlob
+
+
 from rest_framework import routers, serializers, viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -20,22 +23,24 @@ primary_router.register(r'types', TequilaTypeViewSet)
 
 secondary_router_events = drf_routers.NestedSimpleRouter(primary_router, r'events', lookup='event')
 secondary_router_events.register(r'templates', TemplateViewSet)
-secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='size')
-secondary_router_types.register(r'sizes', BoxPresentationViewSet)
+secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='type')
+secondary_router_types.register(r'versions', BoxPresentationViewSet)
 
 
 router = routers.DefaultRouter()
 router.register('types', TequilaTypeViewSet)
 router.register('events', EventTypeViewSet)
-router.register('sizes', BoxPresentationViewSet)
+router.register('versions', BoxPresentationViewSet)
+router.register('tags', TagViewSet)
 router.register('templates', TemplateViewSet)
-router.register('customimages', CustomImageViewSet)
+router.register('uploadimages', CustomImageViewSet)
 
 urlpatterns = [
     # Examples:
     # url(r'^$', 'djmaravtio.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     #url(r'^', PlantillaView.as_view(), name='plantilla'),
+    url(r'^api/tags/upload/', TagBlob),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(primary_router.urls)),
     url(r'^api/', include(secondary_router_events.urls)),

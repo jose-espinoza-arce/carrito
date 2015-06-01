@@ -1,0 +1,48 @@
+<!-- Layout Body -->
+<div class="layout__body">
+	<div class="layout__col layout__col--left">
+		<div class="type">
+			<div class="type__body">
+				<figure>
+					<img ng-src="{{ vm.version.img_zoom_size }}" height="580">
+				</figure>
+			</div>
+			<div class="type__footer">
+				<a href="" class="type__name"><h2>{{ vm.types[0].name}}</h2></a>
+			</div>
+		</div>
+	</div>
+	<div class="layout__col">
+		<div class="version">
+		  <div class="version__size">
+		    <form class="version__form">
+		      <label for="">Presentación</label>
+		      <select ng-model="vm.version"
+		              ng-options="version as version.bottlesize for version in vm.versions"
+		              class="form-control">
+		      </select>
+		      <table class="table table-bordered version__table">
+		        <thead>
+		          <tr>
+		            <th># Botellas por Caja</th>
+		            <th># Etiquetas personalizables por caja</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          <tr>
+		            <td>{{ vm.version.bottles }}</td>
+		            <td>{{ vm.version.maxlabels }}</td>
+		          </tr>
+		        </tbody>
+		      </table>
+		      <hr/>
+		      <div class="form-item">
+		        <label class="form-item-label">No. de Cajas</label>
+		        <input type="text" class="form-control form-item-control" ng-model="vm.box" name="box"/>
+		      </div>
+		      <a ui-sref="timeline.event" ng-click="vm.save()" class="pull-right cta-btn">Siguiente</a>
+		    </form>
+		  </div>
+		</div>
+	</div>
+</div>

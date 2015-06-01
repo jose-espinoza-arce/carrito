@@ -1,0 +1,93 @@
+<!-- Layout Body -->
+<div class="layout__body">
+    <div class="layout__col layout__col--left">
+        <div class="design-label">
+            <figure>
+                <h4>La imagen debe cargar aqui..!</h4>
+                <img tq-transporter="design" source="design.image" storage="storage"class="img-responsive"/>
+            </figure>
+            <!--<pre>
+                {{ storage.order.item.baseImage | json}}
+            </pre>-->
+        </div>
+    </div>
+    <div class="layout__col">
+        <div class="widgets">
+            <!-- Widget Uploader -->
+            <div class="widget widget--upload" ng-controller="UploadController">
+                <form>
+                    <div class="form-group">
+                        <label for="file-input-image" class="widget__label"> <span class="widget__step">1</span>Cargar
+                            Imagen</label>
+
+                        <div class="widget__field">
+                            <input type="file" id="file-input-image"
+                                   name="file-input-image"
+                                   file-input="files" multiple
+                                   class="form-control"/>
+                            <button class="btn btn-primary btn-upload"
+                                    ng-click="uploadFile()">Subir archivo
+                            </button>
+                        </div>
+                    </div>
+                    <!--<pre>{{image | json}}</pre>-->
+                </form>
+
+                <hr/>
+            </div>
+            <!--Image Transform-->
+            <div class="widget widget--transform" ng-controller="TransformController">
+                <span class="widget__label">
+                    <span class="widget__step">2</span>Transformar Imagen</span>
+                </span>
+                <div class="widget__field">
+                    <div class="zoom">
+                        Zoom goes here
+                    </div>
+                    <div class="range">
+                        Range goes here
+                    </div>
+                </div>
+
+            </div>
+            <hr/>
+            <!--Tag custom texts-->
+            <div class="widget widget--custom-text" ng-controller="CustomTextController">
+                <span class="widget__label">
+                    <span class="widget__step">3</span>
+                    Texto Personalizado
+                </span>
+                <div class="widget__field">
+                    <form  class="form-horizontal font__form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Titulo:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="design.headline"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Fuente:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control"
+                                        ng-model="design.font"
+                                        ng-options="font as font.name for font in fontStack" ng-class="font.stack">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Color:</label>
+                            <div class="col-sm-10">
+                                <div class="col-sm-10">
+                                    <input type="text" ng-model="design.color" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success" ng-click="sendOrder()">Send order</button>
+    </div>
+</div>

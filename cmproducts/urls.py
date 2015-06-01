@@ -19,7 +19,7 @@ primary_router.register(r'types', TequilaTypeViewSet)
 
 secondary_router_events = drf_routers.NestedSimpleRouter(primary_router, r'events', lookup='event')
 secondary_router_events.register(r'templates', TemplateViewSet)
-secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='size')
+secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='type')
 secondary_router_types.register(r'sizes', BoxPresentationViewSet)
 
 

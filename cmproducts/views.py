@@ -22,9 +22,9 @@ class BoxPresentationViewSet(viewsets.ModelViewSet):
     queryset = BoxPresentation.objects.all()
     serializer_class = BoxPresentationSerializer
 
-    def list(self, request, size_pk=None, *args, **kwargs):
-        if size_pk:
-            queryset = self.queryset.filter(type_id=size_pk)
+    def list(self, request, type_pk=None, *args, **kwargs):
+        if type_pk:
+            queryset = self.queryset.filter(product_class_id=type_pk)
         else:
             queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)

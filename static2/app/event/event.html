@@ -1,0 +1,35 @@
+<div class="layout__body">
+    <div class="layout__col layout__col--wide layout__col--header">
+        <div class="events">
+            <form novalidate>
+                <div class="form-group">
+                    <label for="event_type">Tipo de Evento</label>
+                    <select name="event_type" id="event_type"
+                            class="form-control"
+                            ng-options="event as event.name for event in events | orderBy:'name'"
+                            ng-model="event"
+                            ng-change="getTemplates(event.id)">
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="layout__col layout__col--wide layout__col--body">
+        <h3 class="carousel-title">Selecciona la plantilla que más te guste</h3>
+        <div j-carousel="carousel" source="templates" class="jcarousel-wrapper">
+            <div class="jcarousel">
+                <ul>
+                    <li ng-repeat="template in templates" ng-model="template">
+                        <a ui-sref="timeline.design"  ng-click="save(template)">
+                            <img ng-src="{{template.timage}}" alt="" width="168" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="jcarousel-controls">
+            <button class="cta-btn" ng-click="carousel.prev()"><i class="fa fa-chevron-left"></i></button>
+            <button class="cta-btn" ng-click="carousel.next()"><i class="fa fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>

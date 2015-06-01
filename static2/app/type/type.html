@@ -1,0 +1,27 @@
+<!-- Layout Body -->
+<div class="layout__body">
+	<div class="layout__col layout__col--left">
+		<div class="type" ui-sref="timeline.version({ typeid: 1 })">
+			<div class="type__body">
+				<figure>
+					<img ng-src="{{ vm.types[0].bimage }}" alt="{{ vm.types[0].name }}" height="580">
+				</figure>
+			</div>
+			<div class="type__footer">
+				<a href="" class="type__name"><h2>{{ vm.types[0].name}}</h2></a>
+			</div>
+		</div>	
+	</div>
+	<div class="layout__col">
+		<div class="type" ui-sref="timeline.version({ typeid: 2 })">
+			<div class="type__body">
+				<figure>
+					<img ng-src="{{ vm.types[1].bimage }}" alt="{{ vm.types[1].name }}" height="580">
+				</figure>
+			</div>
+			<div class="type__footer">
+				<a href="" class="type__name"><h2>{{ vm.types[1].name}}</h2></a>
+			</div>
+		</div>
+	</div>
+</div>

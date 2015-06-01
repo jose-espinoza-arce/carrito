@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     #url(r'^dashboard/paypal/express/', include(paypalapp.urls)),
     url(r'', include(application.urls)),
     url(r'^dashboard/', include('dashboard.cmproducts.urls')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+              + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

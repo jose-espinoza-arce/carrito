@@ -5,6 +5,18 @@ import os
 import StringIO
 from PIL import Image
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=60, blank=True)
+    tag = models.ImageField(
+        upload_to='images/tags/',
+        default='images/generic_image.png',
+    )
+
+    def __unicode__(self):
+        return self.name
+
+
 class TequilaType(models.Model):
     name = models.CharField(max_length=60)
     bimage = models.ImageField(
