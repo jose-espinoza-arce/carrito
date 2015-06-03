@@ -70,7 +70,7 @@ class TagSerializer(serializers.ModelSerializer):
 class TequilaTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductClass
-        fields = ('id', 'name', 'bimage',)
+        fields = ('id', 'name', 'bimage', 'track_stock')
 
 
 class TemplateSerializer(serializers.ModelSerializer):
