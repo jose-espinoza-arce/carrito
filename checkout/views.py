@@ -72,9 +72,9 @@ class PaymentDetailsView(views.PaymentDetailsView):
             "item_name": "Tequila",
             "invoice": order_number,
             "currency_code": submission['order_total'].currency,
-            "notify_url": "https://www.example.com",# + reverse('paypal-ipn'),
-            "return_url": "https://www.example.com/your-return-location/",
-            "cancel_return": "https://www.example.com/your-cancel-location/",
+            #"notify_url": "http://www.example.com",# + reverse('paypal-ipn'),
+            "return_url": "http://maravatio.haushaus.mx/checkout/preview/",
+            "cancel_return": "http://maravatio.haushaus.mx/checkout/preview/",
         }
         paypal_form = PayPalPaymentsForm(initial=paypal_dict)
         # bc_args = {
@@ -126,27 +126,28 @@ class PaymentDetailsView(views.PaymentDetailsView):
 
         #a = bankcard_form.is_valid()
         #print a
-        if paypal_form.is_valid() and bankcard_form.is_valid(): #address_form.is_valid() and bankcard_form.is_valid():
-            # Forms still valid, let's submit an order
-            submission = self.build_submission(
-                #order_kwargs={
-                #    'billing_address': address_form.save(commit=False),
-                #},
-                payment_kwargs={
-                    'bankcard_form': bankcard_form,
-                    'paypal_form': paypal_form,
-                    #'billing_address_form': address_form
-                }
-            )
-            print 'about to submit'
-            return self.submit(**submission)
+        # if paypal_form.is_valid() and bankcard_form.is_valid(): #address_form.is_valid() and bankcard_form.is_valid():
+        #     # Forms still valid, let's submit an order
+        #     submission = self.build_submission(
+        #         #order_kwargs={
+        #         #    'billing_address': address_form.save(commit=False),
+        #         #},
+        #         payment_kwargs={
+        #             'bankcard_form': bankcard_form,
+        #             'paypal_form': paypal_form,
+        #             #'billing_address_form': address_form
+        #         }
+        #     )
+        #     print 'about to submit'
+        #     return self.submit(**submission)
+        return self.submit(**self.build_submission())
         # Must be DOM tampering as these forms were valid and were rendered in
         # a hidden element.  Hence, we don't need to be that friendly with our
         # error message.
-        print 'invalid submision'
-        messages.error(request, _("Invalid submission"))
-        return http.HttpResponseRedirect(
-            reverse('checkout:payment-details'))
+        # print 'invalid submision'
+        # messages.error(request, _("Invalid submission"))
+        # return http.HttpResponseRedirect(
+        #     reverse('checkout:payment-details'))
 
 
     def submit(self, user, basket, shipping_address, shipping_method,  # noqa (too complex (10))
