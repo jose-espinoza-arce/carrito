@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken'
 ] + get_core_apps(['checkout', 'shipping', 'catalogue', 'dashboard',
-                   'dashboard.catalogue', 'dashboard.orders', 'basket',])
+                   'dashboard.catalogue', 'dashboard.orders', 'basket', 'partner'])
 
 SITE_ID = 1
 
