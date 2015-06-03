@@ -10,11 +10,13 @@ from oscar.apps.payment.models import SourceType
 from oscar.apps.order.models import BillingAddress
 
 from django.utils import six
+from django.conf import settings
 
-from paypal.pro.helpers import PayPalWPP
+#from paypal.pro.helpers import PayPalWPP
 
 from .forms import BillingAddressForm, PaymentForm
 
+from paypal.standard.forms import PayPalPaymentsForm
 
 # Customise the core PaymentDetailsView to integrate Datacash
 class PaymentDetailsView(views.PaymentDetailsView):
@@ -33,31 +35,11 @@ class PaymentDetailsView(views.PaymentDetailsView):
         if 'bankcard_form' not in kwargs:
             ctx['bankcard_form'] = BankcardForm()
         if 'paypal_form' not in kwargs:
-            ctx['paypal_form'] = PaymentForm()
-        #if 'billing_address_form' not in kwargs:
-        #    ctx['billing_address_form'] = self.get_billing_address_form(
-        #        ctx['shipping_address']
-        #    )
-        #elif kwargs['billing_address_form'].is_valid():
-            # On the preview view, we extract the billing address into the
-            # template context so we can show it to the customer.
-        #    ctx['billing_address'] = kwargs[
-        #        'billing_address_form'].save(commit=False)
-        #print ctx
+            ctx['paypal_form'] = PayPalPaymentsForm()
         return ctx
 
 
-    # def get_billing_address_form(self, shipping_address):
-    #     """
-    #     Return an instantiated billing address form
-    #     """
-    #     addr = self.get_default_billing_address()
-    #     if not addr:
-    #         return BillingAddressForm(shipping_address=shipping_address)
-    #     billing_addr = BillingAddress()
-    #     addr.populate_alternative_model(billing_addr)
-    #     return BillingAddressForm(shipping_address=shipping_address,
-    #                               instance=billing_addr)
+
 
     def post(self, request, *args, **kwargs):
         # Posting to payment-details isn't the right thing to do.  Form
@@ -79,26 +61,40 @@ class PaymentDetailsView(views.PaymentDetailsView):
 
     def handle_payment_details_submission(self, request):
         # Validate the submitted forms
-        post=request.POST
-        paypal_form = PaymentForm(request.POST)
-        bc_args = {
-            'number': post['acct'],
-            'expiry_month_0': post['expdate_0'],
-            'expiry_month_1': post['expdate_1'],
-            'ccv': post['cvv2']
+        #post=request.POST
+        submission = self.build_submission()
+        print 'en el handle_payment_details_submission'
+        print submission['order_total']
+        order_number = self.generate_order_number(submission['basket'])
+        paypal_dict = {
+            "business": settings.PAYPAL_RECEIVER_EMAIL,
+            "amount": submission['order_total'].excl_tax,
+            "item_name": "Tequila",
+            "invoice": order_number,
+            "currency_code": submission['order_total'].currency,
+            "notify_url": "https://www.example.com",# + reverse('paypal-ipn'),
+            "return_url": "https://www.example.com/your-return-location/",
+            "cancel_return": "https://www.example.com/your-cancel-location/",
         }
-        print 'bc_args'
-        print bc_args
-        print 'post'
-        print post
-        #print bc_args
-        #number=post['acct']
-        #expiry_month_0 = post['expdate_0']
-        #expiry_month_1 = post['expdate_1']
-        #ccv = post['ccv2']
-        bankcard_form = BankcardForm(bc_args)
-        print 'valid bcform?'
-        print bankcard_form.is_valid()
+        paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+        # bc_args = {
+        #     'number': post['acct'],
+        #     'expiry_month_0': post['expdate_0'],
+        #     'expiry_month_1': post['expdate_1'],
+        #     'ccv': post['cvv2']
+        # }
+        # print 'bc_args'
+        # print bc_args
+        # print 'post'
+        # print post
+        # #print bc_args
+        # #number=post['acct']
+        # #expiry_month_0 = post['expdate_0']
+        # #expiry_month_1 = post['expdate_1']
+        # #ccv = post['ccv2']
+        # bankcard_form = BankcardForm(bc_args)
+        # print 'valid bcform?'
+        # print bankcard_form.is_valid()
         #print bankcard_form.backard
         #shipping_address = self.get_shipping_address(
         #    self.request.basket)
@@ -107,19 +103,19 @@ class PaymentDetailsView(views.PaymentDetailsView):
         #print request.POST
         #print bankcard_form.is_valid()
 
-        if paypal_form.is_valid() and bankcard_form.is_valid(): #address_form.is_valid() and bankcard_form.is_valid():
+        #if paypal_form.is_valid(): #and bankcard_form.is_valid(): #address_form.is_valid() and bankcard_form.is_valid():
             # If both forms are valid, we render the preview view with the
             # forms hidden within the page. This seems odd but means we don't
             # have to store sensitive details on the server.
-            return self.render_preview(request, paypal_form=paypal_form, bankcard_form=bankcard_form)#, billing_address_form=address_form)
+        return self.render_preview(request, paypal_form=paypal_form)#, bankcard_form=bankcard_form)#, billing_address_form=address_form)
 
         # Forms are invalid - show them to the customer along with the
         # validation errors.
-        return self.render_payment_details(request, paypal_form=paypal_form, bankcard_form=bankcard_form)#,billing_address_form=address_form)
+        #return self.render_payment_details(request, paypal_form=paypal_form)#, bankcard_form=bankcard_form)#,billing_address_form=address_form)
 
     def handle_place_order_submission(self, request):
-        paypal_form = PaymentForm(request.POST)
-        bankcard_form = BankcardForm(request.POST)
+        #paypal_form = PaymentForm(request.POST)
+        #bankcard_form = BankcardForm(request.POST)
         #shipping_address = self.get_shipping_address(
         #    self.request.basket)
         #print request.POST
@@ -138,7 +134,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
                 #},
                 payment_kwargs={
                     'bankcard_form': bankcard_form,
-                    'paypal_form' : paypal_form,
+                    'paypal_form': paypal_form,
                     #'billing_address_form': address_form
                 }
             )
@@ -293,13 +289,14 @@ class PaymentDetailsView(views.PaymentDetailsView):
             'invnum': order_number,
             'amt': total.incl_tax
         }
-        success = kwargs['paypal_form'].process(self.request, item)
-        print success
+        #success = kwargs['paypal_form'].process(self.request, item)
+        #print success
         #print bankcard
         #order_number, paypal, amt=total.incl_tax
         #paypalwpp = PayPalWPP()
 
-        print 'en el handle payment'
+        #print 'en el handle payment'
+        paypal_ref ='000test'
         # Request was successful - record the "payment source".  As this
         # request was a 'pre-auth', we set the 'amount_allocated' - if we had
         # performed an 'auth' request, then we would set 'amount_debited'.

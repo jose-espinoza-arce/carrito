@@ -2,7 +2,9 @@
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage, Tag
 from dashboard.cmproducts.serializers import TequilaTypeSerializer, \
     EventTypeSerializer, BoxPresentationSerializer, \
-    TemplateSerializer, CustomImageSerializer, TagSerializer
+    TemplateSerializer, CustomImageSerializer, TagSerializer, StockRecordSerializer
+
+from oscar.apps.partner.models import StockRecord
 
 from catalogue.models import ProductClass, Product
 from django.views.decorators.csrf import csrf_exempt
@@ -71,6 +73,10 @@ def TagBlob(request):
 
         return HttpResponse('<h1>Image successfully saved!</h1>')
 
+
+class StockRecordViewSet(viewsets.ModelViewSet):
+    queryset = StockRecord.objects.all()
+    serializer_class = StockRecordSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):

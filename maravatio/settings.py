@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'compressor',
     'widget_tweaks',
     'paypal.standard',
-    'paypal.pro',
+    #'paypal.pro',
+    'paypal.standard.ipn',
     'dashboard.cmproducts',
     'corsheaders',
     #'maravatioapp',
@@ -139,9 +140,9 @@ REST_FRAMEWORK = {
 #paypal settings
 PAYPAL_TEST = True
 PAYPAL_DEBUG = True
-PAYPAL_WPP_USER = "eangel82_api1.gmail.com"
-PAYPAL_WPP_PASSWORD = "SSJNL5LK3DKS6FQJ"
-PAYPAL_WPP_SIGNATURE = "AFcWxV21C7fd0v3bYYYRCpSSRl31AEEsFlFVBPdnukiFEivDPqwaMeJr"
+#PAYPAL_WPP_USER = "eangel82_api1.gmail.com"
+#PAYPAL_WPP_PASSWORD = "SSJNL5LK3DKS6FQJ"
+#PAYPAL_WPP_SIGNATURE = "AFcWxV21C7fd0v3bYYYRCpSSRl31AEEsFlFVBPdnukiFEivDPqwaMeJr"
 PAYPAL_RECEIVER_EMAIL = 'backend2.muchaweb@gmail.com'
 
 #Oscar Settings

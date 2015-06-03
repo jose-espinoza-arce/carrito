@@ -1,5 +1,5 @@
 {% extends "checkout/checkout.html" %}
-{% load currency_filters %}
+{% load local_currency_filters %}
 {% load i18n %}
 
 {% block title %}
@@ -19,30 +19,13 @@
     <h3>{% trans "Payment" %}</h3>
     <div class="well well-success" data-behaviours="match-height">
 
-        <h4>Bankcard</h4>
-        <p>{% blocktrans with amount=order_total.incl_tax|currency %}
-            {{ amount }} will be debited from your bankcard:
+        <h4>PayPal</h4>
+        <p>{% blocktrans with amount=order_total.incl_tax|local_currency %}
+            {{ amount }} Serán cargados a su cuenta de PayPal:
         {% endblocktrans %}</p>
-        {% with bankcard=bankcard_form.bankcard %}
-            <p>
-            {% trans "Card type" %}: {{ bankcard.card_type }} <br/>
-            {% trans "Card number" %}: {{ bankcard.obfuscated_number }} <br/>
-            {% trans "Expiry month" %}: {{ bankcard.expiry_month }}</p>
-        {% endwith %}
+        {{ paypal_form.render }}
 
-        <h4>Billing address</h4>
-        <p>
-        {% for field in billing_address.active_address_fields %}
-            {{ field }}<br/>
-        {% endfor %}
-            </p>
-            {% if billing_address.phone_number %}
-                <p>{% trans "Contact number" %}: {{ billing_address.phone_number }}</p>
-        {% endif %}
 
-        <div class="alert-actions">
-            <a href="{% url 'checkout:payment-details' %}" class="btn">{% trans "Change payment details" %}</a>
-        </div>
     </div>
 </div>
 {% endblock %}

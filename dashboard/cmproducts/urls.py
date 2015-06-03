@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 #from django.contrib import admin
 from dashboard.cmproducts.views import TequilaTypeViewSet, EventTypeViewSet, \
                             BoxPresentationViewSet, TemplateViewSet, \
-                            CustomImageViewSet, TagViewSet, TagBlob
+                            CustomImageViewSet, TagViewSet, TagBlob, StockRecordViewSet
 
 
 from rest_framework import routers, serializers, viewsets
@@ -20,6 +20,7 @@ from rest_framework_nested import routers as drf_routers
 primary_router = drf_routers.SimpleRouter()
 primary_router.register(r'events', EventTypeViewSet)
 primary_router.register(r'types', TequilaTypeViewSet)
+primary_router.register(r'versions', BoxPresentationViewSet)
 
 secondary_router_events = drf_routers.NestedSimpleRouter(primary_router, r'events', lookup='event')
 secondary_router_events.register(r'templates', TemplateViewSet)
@@ -34,6 +35,7 @@ router.register('versions', BoxPresentationViewSet)
 router.register('tags', TagViewSet)
 router.register('templates', TemplateViewSet)
 router.register('uploadimages', CustomImageViewSet)
+router.register('stockrecords', StockRecordViewSet)
 
 urlpatterns = [
     # Examples:

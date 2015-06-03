@@ -1,23 +1,34 @@
 {% extends 'oscar/checkout/payment_details.html' %}
 {% load i18n %}
 
+{% block checkout_title %}{% trans "Selecciona el método de pago" %}{% endblock %}
+
 {% block payment_details %}
     <!--<div class="page-header">
-        <h1>{% trans "Enter payment details" %}</h1>
+        <h1>{% trans "Choose payment method" %}</h1>
     </div>-->
 
     {% block payment_details_content %}
+        <div class="well well-info">
+            <h3>{% trans "PayPal" %} </h3>
+            <div class="alert alert-warning">
+                <h4>{% trans "Descrpción" %}</h4>
+                <p>{% trans "El pago se hará mediante PayPal." %}</p>
+
+            </div>
+        </div>
+
     <form action="{% url 'checkout:preview' %}" class="payment-details form-horizontal" method="post">
         {% csrf_token %}
 
-        <div class="well well-info">
+        <!--<div class="well well-info">
             <h3>{% trans "Bankcard" %} </h3>
             {% include 'partials/form_fields.html' with form=paypal_form %}
             <div class="alert alert-warning">
                 <h4>{% trans "Demo site help" %}</h4>
                 <p>{% trans "You can use a magic card number of 1000010000000007 together with an CVV number." %}</p>
             </div>
-        </div>
+        </div>-->
 
 
         <!--<div class="well well-info">

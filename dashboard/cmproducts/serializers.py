@@ -1,5 +1,8 @@
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage, Tag
 from catalogue.models import ProductClass, Product
+
+from oscar.apps.partner.models import StockRecord
+
 from rest_framework import serializers
 
 
@@ -91,6 +94,11 @@ class BoxPresentationSerializer(serializers.ModelSerializer):
                   'maxlabels', 'bottlerow', 'img_original_size',
                   'img_zoom_size', 'img_tag'
         )
+
+class StockRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StockRecord
+        #fields = '__all__'
 
 
 class CustomImageSerializer(serializers.ModelSerializer):

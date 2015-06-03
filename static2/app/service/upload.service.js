@@ -22,7 +22,7 @@
 			var defered = $q.defer(),
 				promise = defered.promise;
 
-			$http.post(baseUrl + 'customimages/', fd, {
+			$http.post(baseUrl + 'uploadimages/', fd, {
 					headers: {
 						'Content-Type': undefined,
 						"Authorization": "Token c4e913f4877e6762b8458b4d349ed402a5c3a842"
