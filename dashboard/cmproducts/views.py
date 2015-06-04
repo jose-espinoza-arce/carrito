@@ -9,6 +9,7 @@ from oscar.apps.partner.models import StockRecord
 from catalogue.models import ProductClass, Product
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 from rest_framework import viewsets
 from rest_framework import status
@@ -61,8 +62,9 @@ def TagBlob(request):
     if request.method == 'POST':
         #base64_string = request.order
         #print base64_string
-        print request.is_ajax()
+        #print request.is_ajax()
         data = json.loads(request.body)
+        print data['item']['version']
         serializer = TagSerializer(data=data['item'])
 
         #print data['item']['tag']
@@ -70,13 +72,27 @@ def TagBlob(request):
             serializer.save()
         #serializer.
         #print serializer.to_internal_value(data=data['item'])
-
-        return HttpResponse('<h1>Image successfully saved!</h1>')
+        url = '/basket/add/%s/' % data['item']['version']['id']
+        print url
+        return redirect(url)
 
 
 class StockRecordViewSet(viewsets.ModelViewSet):
     queryset = StockRecord.objects.all()
     serializer_class = StockRecordSerializer
+
+    def list(self, request, version_pk=None, *args, **kwargs):
+        if version_pk:
+            queryset = self.queryset.filter(product_id=version_pk)
+        else:
+            queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class TagViewSet(viewsets.ModelViewSet):

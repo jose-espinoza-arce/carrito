@@ -80,13 +80,13 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         if os.path.isfile(instance.img_original_size.path):
             os.remove(instance.img_original_size.path)
 
-    # if instance.img_zoom_size:
-    #     if os.path.isfile(instance.img_original_size.path):
-    #         os.remove(instance.img_original_size.path)
-    #
-    # if instance.img_tag:
-    #     if os.path.isfile(instance.img_original_size.path):
-    #         os.remove(instance.img_original_size.path)
+    if instance.img_zoom_size:
+        if os.path.isfile(instance.img_original_size.path):
+            os.remove(instance.img_original_size.path)
+
+    if instance.img_tag:
+        if os.path.isfile(instance.img_original_size.path):
+            os.remove(instance.img_original_size.path)
 
 @receiver(models.signals.pre_save, sender=Product)
 def auto_delete_file_on_change(sender, instance, **kwargs):
@@ -97,8 +97,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return False
     #images = [img_original_size, ]
     try:
-        old_file = ProductClass.objects.get(pk=instance.pk).img_original_size
-    except ProductClass.DoesNotExist:
+        old_file = Product.objects.get(pk=instance.pk).img_original_size
+    except Product.DoesNotExist:
         return False
 
     new_file = instance.img_original_size
@@ -106,25 +106,25 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
 
-    # try:
-    #     old_file = ProductClass.objects.get(pk=instance.pk).img_zoom_size
-    # except ProductClass.DoesNotExist:
-    #     return False
-    #
-    # new_file = instance.img_zoom_size
-    # if not old_file == new_file:
-    #     if os.path.isfile(old_file.path):
-    #         os.remove(old_file.path)
-    #
-    # try:
-    #     old_file = ProductClass.objects.get(pk=instance.pk).img_tag
-    # except ProductClass.DoesNotExist:
-    #     return False
-    #
-    # new_file = instance.img_tag
-    # if not old_file == new_file:
-    #     if os.path.isfile(old_file.path):
-    #         os.remove(old_file.path)
+    try:
+        old_file = Product.objects.get(pk=instance.pk).img_zoom_size
+    except ProductClass.DoesNotExist:
+        return False
+
+    new_file = instance.img_zoom_size
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
+
+    try:
+        old_file = Product.objects.get(pk=instance.pk).img_tag
+    except ProductClass.DoesNotExist:
+        return False
+
+    new_file = instance.img_tag
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
 
 
 

@@ -2,6 +2,8 @@ from oscar.apps.basket.views import BasketAddView as CoreBasketAddView
 
 from django.core.urlresolvers import reverse
 
+from django import shortcuts
+
 from django.utils.http import is_safe_url
 
 from oscar.core.utils import safe_referrer
@@ -63,10 +65,11 @@ class BasketAddView(CoreBasketAddView):#FormView):
     # add_signal = signals.basket_addition
     # http_method_names = ['post']
 
-    # def post(self, request, *args, **kwargs):
-    #     self.product = shortcuts.get_object_or_404(
-    #         self.product_model, pk=kwargs['pk'])
-    #     return super(BasketAddView, self).post(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        print 'in post'
+        self.product = shortcuts.get_object_or_404(
+            self.product_model, pk=kwargs['pk'])
+        return super(BasketAddView, self).post(request, *args, **kwargs)
 
     # def get_form_kwargs(self):
     #     kwargs = super(BasketAddView, self).get_form_kwargs()

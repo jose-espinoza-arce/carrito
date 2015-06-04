@@ -26,6 +26,8 @@ secondary_router_events = drf_routers.NestedSimpleRouter(primary_router, r'event
 secondary_router_events.register(r'templates', TemplateViewSet)
 secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='type')
 secondary_router_types.register(r'versions', BoxPresentationViewSet)
+secondary_router_versions = drf_routers.NestedSimpleRouter(primary_router, r'versions', lookup='version')
+secondary_router_versions.register(r'stockrecords', StockRecordViewSet)
 
 
 router = routers.DefaultRouter()
@@ -47,6 +49,7 @@ urlpatterns = [
     url(r'^api/', include(primary_router.urls)),
     url(r'^api/', include(secondary_router_events.urls)),
     url(r'^api/', include(secondary_router_types.urls)),
+    url(r'^api/', include(secondary_router_versions.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

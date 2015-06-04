@@ -5,11 +5,12 @@
         .module('app.upload')
         .controller('UploadController', UploadController);
 
-    UploadController.$inject = ['$scope', '$rootScope', 'upload', 'designNetwork'];
+    UploadController.$inject = ['$sessionStorage','$scope', '$rootScope', 'upload', 'designNetwork'];
 
     /* @ngInject */
-    function UploadController($scope, $rootScope, upload, designNetwork) {
+    function UploadController($sessionStorage, $scope, $rootScope, upload, designNetwork) {
 
+        $scope.storage = $sessionStorage;
         $scope.upload = upload;
         $scope.image = {};
 
@@ -35,6 +36,7 @@
 
             upload.file(fd)
                 .then(function (res) {
+                    $scope.storage.order.item.uploadimage = res;
                     $scope.image = res;
                     $scope.design.setImage($scope.image);
                     //$rootScope.$broadcast('upload.complete');
