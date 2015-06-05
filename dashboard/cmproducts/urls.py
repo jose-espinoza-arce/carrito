@@ -20,20 +20,20 @@ from rest_framework_nested import routers as drf_routers
 primary_router = drf_routers.SimpleRouter()
 primary_router.register(r'events', EventTypeViewSet)
 primary_router.register(r'types', TequilaTypeViewSet)
-primary_router.register(r'versions', BoxPresentationViewSet)
+primary_router.register(r'products', BoxPresentationViewSet)
 
 secondary_router_events = drf_routers.NestedSimpleRouter(primary_router, r'events', lookup='event')
 secondary_router_events.register(r'templates', TemplateViewSet)
 secondary_router_types = drf_routers.NestedSimpleRouter(primary_router, r'types', lookup='type')
-secondary_router_types.register(r'versions', BoxPresentationViewSet)
-secondary_router_versions = drf_routers.NestedSimpleRouter(primary_router, r'versions', lookup='version')
-secondary_router_versions.register(r'stockrecords', StockRecordViewSet)
+secondary_router_types.register(r'products', BoxPresentationViewSet)
+secondary_router_products = drf_routers.NestedSimpleRouter(primary_router, r'products', lookup='product')
+secondary_router_products.register(r'stockrecords', StockRecordViewSet)
 
 
 router = routers.DefaultRouter()
 router.register('types', TequilaTypeViewSet)
 router.register('events', EventTypeViewSet)
-router.register('versions', BoxPresentationViewSet)
+router.register('products', BoxPresentationViewSet)
 router.register('tags', TagViewSet)
 router.register('templates', TemplateViewSet)
 router.register('uploadimages', CustomImageViewSet)
@@ -49,7 +49,7 @@ urlpatterns = [
     url(r'^api/', include(primary_router.urls)),
     url(r'^api/', include(secondary_router_events.urls)),
     url(r'^api/', include(secondary_router_types.urls)),
-    url(r'^api/', include(secondary_router_versions.urls)),
+    url(r'^api/', include(secondary_router_products.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

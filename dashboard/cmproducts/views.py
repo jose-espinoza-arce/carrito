@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 import json
+import ast
 from django.shortcuts import render_to_response
 from oscar.apps.dashboard.catalogue.views import ProductCreateUpdateView
 
@@ -63,6 +64,8 @@ def TagBlob(request):
         #base64_string = request.order
         #print base64_string
         #print request.is_ajax()
+        #print request.body
+        #data = ast.literal_eval(request.body)
         data = json.loads(request.body)
         print data['item']['version']
         serializer = TagSerializer(data=data['item'])
@@ -81,9 +84,9 @@ class StockRecordViewSet(viewsets.ModelViewSet):
     queryset = StockRecord.objects.all()
     serializer_class = StockRecordSerializer
 
-    def list(self, request, version_pk=None, *args, **kwargs):
-        if version_pk:
-            queryset = self.queryset.filter(product_id=version_pk)
+    def list(self, request, product_pk=None, *args, **kwargs):
+        if product_pk:
+            queryset = self.queryset.filter(product_id=product_pk)
         else:
             queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)

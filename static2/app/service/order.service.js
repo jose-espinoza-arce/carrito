@@ -22,7 +22,9 @@
             var defered = $q.defer(),
                 promise = defered.promise;
             console.log(newOrder);
-            $http.post(baseUrl + 'tags/upload/', newOrder, {
+            var newOrder_string = JSON.stringify(newOrder);
+            console.log(newOrder_string);
+            $http.post(baseUrl + 'tags/upload/', newOrder_string, {
 					headers: {
 						//'Content-Type': undefined,
 						"Authorization": "Token c4e913f4877e6762b8458b4d349ed402a5c3a842"
