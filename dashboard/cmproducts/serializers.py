@@ -90,7 +90,7 @@ class EventTypeSerializer(serializers.ModelSerializer):
 class BoxPresentationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'product_class', 'categories', 'bottlesize', 'bottles',
+        fields = ('id','title','description', 'product_class', 'categories', 'bottlesize', 'bottles',
                   'maxlabels', 'bottlerow', 'img_original_size',
                   'img_zoom_size', 'img_tag'
         )
