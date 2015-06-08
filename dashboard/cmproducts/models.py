@@ -8,6 +8,7 @@ from PIL import Image
 
 class Tag(models.Model):
     name = models.CharField(max_length=60, blank=True)
+    uploadimage = models.ForeignKey('CustomImage', default=1)
     tag = models.ImageField(
         upload_to='images/tags/',
         default='images/generic_image.png',

@@ -39,7 +39,12 @@ class ProductClass(AbstractProductClass):
     bimage = models.ImageField(
         verbose_name='Imagen',
         upload_to='images/catalogo/',
-        default=os.path.join(settings.STATIC_ROOT,'generic_profile_image.png'),
+        default=os.path.join('images', 'catalogo', 'generic_profile_image.png'),
+        )
+    tag_img = models.ImageField(
+        verbose_name='Imagen',
+        upload_to='images/catalogo/',
+        default=os.path.join('images', 'catalogo', 'generic_profile_image.png'),
         )
 
 # These two auto-delete files from filesystem when they are unneeded:
@@ -51,6 +56,10 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.bimage:
         if os.path.isfile(instance.bimage.path):
             os.remove(instance.bimage.path)
+
+    if instance.tag_img:
+        if os.path.isfile(instance.tag_img.path):
+            os.remove(instance.tag_img.path)
 
 @receiver(models.signals.pre_save, sender=ProductClass)
 def auto_delete_file_on_change(sender, instance, **kwargs):
@@ -66,6 +75,16 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return False
 
     new_file = instance.bimage
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
+
+    try:
+        old_file = ProductClass.objects.get(pk=instance.pk).tag_img
+    except ProductClass.DoesNotExist:
+        return False
+
+    new_file = instance.tag_img
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
