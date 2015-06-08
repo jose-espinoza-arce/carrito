@@ -21,7 +21,7 @@
         function sendNewOrder(newOrder) {
             var defered = $q.defer(),
                 promise = defered.promise;
-            console.log(newOrder);
+            console.log(newOrder.item.tag);
             var newOrder_string = JSON.stringify(newOrder);
             console.log(newOrder_string);
             $http.post(baseUrl + 'tags/upload/', newOrder_string, {

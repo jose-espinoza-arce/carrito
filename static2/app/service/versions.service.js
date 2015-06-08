@@ -15,8 +15,8 @@
 		function allVersions(id) {
 			var defered = $q.defer(),
 				promise = defered.promise;
-			console.log(baseUrl + 'types/' + id + '/versions/');
-			$http.get(baseUrl + 'types/' + id + '/versions/')
+			console.log(baseUrl + 'types/' + id + '/products/');
+			$http.get(baseUrl + 'types/' + id + '/products/')
 				.success(function(data) {
 					defered.resolve(data);
 				})
