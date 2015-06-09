@@ -22,4 +22,4 @@ class ProductClassForm(CoreProductClassForm):
 
     class Meta:
         model = ProductClass
-        fields = ['name', 'bimage', 'track_stock']#, 'requires_shipping', 'track_stock', 'options']
+        fields = ['name', 'bimage', 'track_stock', 'tag_img']#, 'requires_shipping', 'track_stock', 'options']

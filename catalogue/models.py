@@ -1,10 +1,8 @@
 import os
 import uuid
 
-from django.dispatch import receiver
 
 from django.conf import settings
-
 from django.db import models
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductClass
@@ -47,25 +45,39 @@ class ProductClass(AbstractProductClass):
         default=os.path.join('images', 'catalogo', 'generic_profile_image.png'),
         )
 
+
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import pre_delete, post_delete, pre_save
+
+#este metrodo funciona. hay que implementar la actualizacion.
+@receiver(pre_delete, sender=ProductClass)
+def delete_file(sender, instance, **kwargs):
+    print 'deleting from pre'
+    instance.bimage.delete(False)
+    instance.tag_img.delete(False)
+
+
 # These two auto-delete files from filesystem when they are unneeded:
-@receiver(models.signals.post_delete, sender=ProductClass)
+@receiver(post_delete, sender=ProductClass)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """Deletes file from filesystem
     when corresponding `MediaFile` object is deleted.
     """
+    print 'deleting'
     if instance.bimage:
         if os.path.isfile(instance.bimage.path):
             os.remove(instance.bimage.path)
 
-    if instance.tag_img:
-        if os.path.isfile(instance.tag_img.path):
-            os.remove(instance.tag_img.path)
+    #if instance.tag_img:
+    #    if os.path.isfile(instance.tag_img.path):
+    #        os.remove(instance.tag_img.path)
 
-@receiver(models.signals.pre_save, sender=ProductClass)
+@receiver(pre_save, sender=ProductClass)
 def auto_delete_file_on_change(sender, instance, **kwargs):
     """Deletes file from filesystem
     when corresponding `MediaFile` object is changed.
     """
+    print '------------------------------changing--------------------------------------'
     if not instance.pk:
         return False
 
@@ -80,6 +92,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
             os.remove(old_file.path)
 
     try:
+        print 'updating'
         old_file = ProductClass.objects.get(pk=instance.pk).tag_img
     except ProductClass.DoesNotExist:
         return False

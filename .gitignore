@@ -8,3 +8,4 @@ api_requirements.txt
 maravatio/.ropeproject/
 .ropeproject/
 static/
+dashboard/cmproducts/migrations/

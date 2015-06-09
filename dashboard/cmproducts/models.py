@@ -9,7 +9,7 @@ from PIL import Image
 class Tag(models.Model):
     name = models.CharField(max_length=60, blank=True)
     uploadimage = models.ForeignKey('CustomImage', default=1)
-    tag = models.ImageField(
+    label = models.ImageField(
         upload_to='images/tags/',
         default='images/generic_image.png',
     )
@@ -50,15 +50,15 @@ class Template(models.Model):
     )
 
 
-    def save(self, *args, **kwargs):
-        super(Template, self).save(*args, **kwargs)
-        if self.timage:
-            fileimage = str(self.timage.path)
-            img = Image.open(fileimage)
-            newW = 323
-            newH = 323 * self.timage.height/self.timage.width
-            img = img.resize((newW, newH), Image.ANTIALIAS)
-            img.save(fileimage)
+    #def save(self, *args, **kwargs):
+    #    super(Template, self).save(*args, **kwargs)
+    #    if self.timage:
+    #        fileimage = str(self.timage.path)
+    #        img = Image.open(fileimage)
+    #        newW = 323
+    #        newH = 323 * self.timage.height/self.timage.width
+    #        img = img.resize((newW, newH), Image.ANTIALIAS)
+    #        img.save(fileimage)
 
 
 

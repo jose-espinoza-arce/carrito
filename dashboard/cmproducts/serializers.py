@@ -58,19 +58,19 @@ class Base64ImageField(serializers.ImageField):
 
 
 class TagSerializer(serializers.ModelSerializer):
-    tag = Base64ImageField(
+    label = Base64ImageField(
         max_length=None, use_url=True,
     )
 
     class Meta:
         model = Tag
-        fields = ('id', 'name', 'tag')
+        #fields = ('id', 'name', 'tag')
 
 
 class TequilaTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductClass
-        fields = ('id', 'name', 'bimage', 'track_stock', 'img_tag')
+        fields = ('id', 'name', 'bimage', 'track_stock', 'tag_img')
 
 
 class TemplateSerializer(serializers.ModelSerializer):
@@ -92,7 +92,7 @@ class BoxPresentationSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id','title','description', 'product_class', 'categories', 'bottlesize', 'bottles',
                   'maxlabels', 'bottlerow', 'img_original_size',
-                  'img_zoom_size', 'img_tag'
+                  'img_zoom_size', 'img_tag',
         )
 
 class StockRecordSerializer(serializers.ModelSerializer):
