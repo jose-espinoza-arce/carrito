@@ -1,5 +1,5 @@
 "use strict";
-angular.module("app", ["app.core", "app.blocks", "app.services", "app.wizard", "app.home"]), angular.module("app.core", ["ui.router", "ngSanitize", "ngStorage", "ngCookies"]), angular.module("app.services", []).constant("baseUrl", "http://192.168.1.87:8000/dashboard/api/").constant("token", "Token c4e913f4877e6762b8458b4d349ed402a5c3a842")//61e7de5eae825fe98dbb8e1ad714a97d4fc090f8")
+angular.module("app", ["app.core", "app.blocks", "app.services", "app.wizard", "app.home"]), angular.module("app.core", [ "ui.router", "ngSanitize", "ngStorage", "ngCookies", "angular-loading-bar"]), angular.module("app.services", []).constant("baseUrl", "http://192.168.1.87:8000/dashboard/api/").constant("token", "Token c4e913f4877e6762b8458b4d349ed402a5c3a842")//61e7de5eae825fe98dbb8e1ad714a97d4fc090f8")
     .factory("Types", ["$http", "$q", "baseUrl", function (a, b, c) {
     return{getAll: function () {
         a.defaults.withCredentials = !1;

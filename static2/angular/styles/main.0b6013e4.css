@@ -7355,3 +7355,5 @@ label {
     display: table-cell;
     vertical-align: top
 }
+
+#loading-bar .bar { background: #A6833C; } #loading-bar .peg { box-shadow: #A6833C 1px 0 6px 1px; } /* Fancy blur effect */ #loading-bar-spinner .spinner-icon { border-top-color: #A6833C; border-left-color: #A6833C; }
