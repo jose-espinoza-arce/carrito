@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie-edge">
+    <title>Tequila Hacienda Maravatio</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!--   <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'
+          type='text/css'>-->
+    <link rel="stylesheet" href="/static/libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/libs/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/app/extras/backslider/css/backslider.css">
+    <link rel="stylesheet" href="/static/libs/angular-loading-bar/build/loading-bar.css">
+    <link rel="stylesheet" href="/static/libs/jquery-minicolors/jquery.minicolors.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+<body>
+<div class="wrapper">
+    <!-- Left Nav-->
+    <div class="left-bar left-bar--collapsed" ng-controller="NavController as vm">
+        <!-- Overlay -->
+        <div class="left-bar__overlay">&nbsp;</div>
+
+        <!-- Folded Menu -->
+        <div class="left-bar__thin">
+            <div class="logo">
+                <a href="" class="logo__image">Tequila Hacienda Maravatio</a>
+            </div>
+        </div>
+
+        <!-- Spread out Menu -->
+        <div class="left-bar__wide">
+            <div class="spread-menu">
+                <div class="spread-menu__header">
+                    <div class="logo-header">
+                        <a ui-sref="home" class="logo-header__image">Tequila Hacienda Maravatio</a>
+                    </div>
+                </div>
+                <div class="spread-menu__body">
+                    <nav class="nav-types">
+                        <h3 class="nav-types__heading">Haz que ese momento perdure por siempre selecciona el tequila de
+                            tu preferencia y personaliza tu etiqueta.</h3>
+                        <ul class="list-unstyled type-list">
+                            <li class="type-list__item" ng-repeat="type in vm.types">
+                                <a class="type-item" ui-sref="timeline.version({ typeid: type.id })">
+                                    <div class="type-item__body">
+                                        <img ng-src="{% verbatim %}{{ type.bimage }}{% endverbatim %}" alt="type.name" height="200">
+                                    </div>
+                                    <div class="type-item__footer">
+                                        <h2 class="type-item__name">{{type.name}}</h2>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                    <!-- Social icons -->
+                    <div class="social-media">
+                        <a href="" class="social-media__item">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="" class="social-media__item">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                    <!-- Footer -->
+                    <footer class="footer">
+                        <ul class="list-unstyled footer-links">
+                            <li class="footer-links__item">
+                                <a href="">Contacto</a>
+                            </li>
+                            <li class="footer-links__item">
+                                <a href="">Términos y Condiciones</a>
+                            </li>
+                            <li class="footer-links__item">
+                                THM {{ vm.date }} <i class="fa fa-copyright"></i> | Desarrollado por <a href="">Mucha-Web</a>
+                            </li>
+                        </ul>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to fold Menu -->
+        <div class="left-bar__close">
+            <div class="logo close-button">
+                <a href="#" class="logo__image">Tequila Hacienda Maravatio</a>
+            </div>
+        </div>
+    </div>
+    <!-- Main Layout -->
+    <div class="layout" ui-view>
+    </div>
+    <!-- / Main Layout -->
+</div>
+<!-- / Wrapper -->
+
+<script src="/static/libs/jquery/dist/jquery.min.js"></script>
+<script src="/static/libs/underscore/underscore-min.js"></script>
+<script src="/static/libs/lodash/lodash.min.js"></script>
+<script src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/libs/gsap/src/minified/TweenMax.min.js"></script>
+<script src="/static/libs/gsap/src/minified/TimelineMax.min.js"></script>
+<script src="/static/libs/vec2d/dist/vec2d.min.js"></script>
+<script src="/static/libs/angular/angular.min.js"></script>
+<script src="/static/libs/ngstorage/ngStorage.min.js"></script>
+<script src="/static/libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/static/libs/angular-loading-bar/build/loading-bar.min.js"></script>
+<script src="/static/libs/jquery-minicolors/jquery.minicolors.js"></script>
+<script src="/static/libs/angular-minicolors/angular-minicolors.js"></script>
+<script src="/static/libs/jcarousel/dist/jquery.jcarousel.js"></script>
+<script src="/static/libs/html2canvas/build/html2canvas.min.js"></script>
+
+<!-- Extras -->
+<script src="/static/app/extras/navigation.js"></script>
+<script src="/static/app/extras/range.js"></script>
+<script src="/static/app/extras/zoom.js"></script>
+<script src="/static/app/extras/backslider/js/jquery.backslider.min.js"></script>
+
+<!-- App -->
+<script src="/static/app/app.module.js"></script>
+<script src="/static/app/core/core.module.js"></script>
+
+<!-- Layout -->
+<script src="/static/app/layout/layout.module.js"></script>
+<script src="/static/app/layout/nav.controller.js"></script>
+
+<!-- Home -->
+<script src="/static/app/home/home.module.js"></script>
+<script src="/static/app/home/home.controller.js"></script>
+<script src="/static/app/home/slider.directive.js"></script>
+
+<!-- Timeline -->
+<script src="/static/app/timeline/timeline.module.js"></script>
+<script src="/static/app/timeline/timeline.config.js"></script>
+<script src="/static/app/timeline/timeline.controller.js"></script>
+
+<!-- Type -->
+<script src="/static/app/type/type.module.js"></script>
+<script src="/static/app/type/type.config.js"></script>
+<script src="/static/app/type/type.controller.js"></script>
+
+<!-- Version -->
+<script src="/static/app/version/version.module.js"></script>
+<script src="/static/app/version/version.config.js"></script>
+<script src="/static/app/version/version.controller.js"></script>
+
+<!-- Event -->
+<script src="/static/app/event/event.module.js"></script>
+<script src="/static/app/event/event.config.js"></script>
+<script src="/static/app/event/event.controller.js"></script>
+<script src="/static/app/event/carousel.directive.js"></script>
+
+<!-- Design -->
+<script src="/static/app/design/design.module.js"></script>
+<script src="/static/app/design/design.config.js"></script>
+<script src="/static/app/design/design.controller.js"></script>
+<script src="/static/app/design/transporter.directive.js"></script>
+
+<!-- Data Services -->
+<script src="/static/app/service/service.module.js"></script>
+<script src="/static/app/service/types.service.js"></script>
+<script src="/static/app/service/versions.service.js"></script>
+<script src="/static/app/service/events.service.js"></script>
+<script src="/static/app/service/templates.service.js"></script>
+<script src="/static/app/service/upload.service.js"></script>
+<script src="/static/app/service/messages.service.js"></script>
+<script src="/static/app/service/design-network.service.js"></script>
+<script src="/static/app/service/order.service.js"></script>
+
+<!-- App uploader -->
+<script src="/static/app/upload/upload.module.js"></script>
+<script src="/static/app/upload/upload.controller.js"></script>
+<script src="/static/app/upload/upload.directive.js"></script>
+
+<!--App transformer image-->
+<script src="/static/app/transform/transform.module.js"></script>
+<script src="/static/app/transform/transform.controller.js"></script>
+
+<!-- Label -->
+<script src="/static/app/label/label.module.js"></script>
+<script src="/static/app/label/label.controller.js"></script>
+
+<!-- Filters -->
+<script src="/static/app/filter/filter.module.js"></script>
+<script src="/static/app/filter/filter.controller.js"></script>
+
+<!-- Custom Text -->
+<script src="/static/app/customtext/customtext.module.js"></script>
+<script src="/static/app/customtext/customtext.controller.js"></script>
+
+<!-- Summary -->
+<script src="/static/app/summary/summary.module.js"></script>
+<script src="/static/app/summary/summary.config.js"></script>
+<script src="/static/app/summary/summary.controller.js"></script>
+
+</body>
+
+</html>

@@ -16,14 +16,14 @@
 
 {% block checkout_title %}
     {% blocktrans with number=order.number %}
-        Order {{ number }}: confirmation
+        Orden {{ number }}: confirmación
     {% endblocktrans %}
 {% endblock %}
 
 {% block content %}
     <p class="lead">
         {% blocktrans with number=order.number %}
-        Your order has been placed and a confirmation email has been sent - your order number is
+        Su orden ha sido generada y un email de confirmación le será enviado - su número de orden es
         <strong>{{ number }}</strong>.
         {% endblocktrans %}
         {% trans "Please make a note of this reference or print this page and quote it in any communication with us regarding your order." %}</p>
