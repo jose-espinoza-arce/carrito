@@ -370,8 +370,15 @@ angular.module("app", ["app.core", "app.blocks", "app.services", "app.wizard", "
         var b = {template: a.template.id, label: a.processedLabel.id};
         h.push(b)
     });
-    var i = g.replace("dashboard/api/", "basket/add/") + a.$storage.order.productId + "/";
-    console.log(i), a.cart = {csrfmiddlewaretoken: d.get("csrftoken"), quantity: a.$storage.order.qty}, a.checkout = function () {
+    var i = g.replace("dashboard/api/", "basket/add/") + a.$storage.order.productId + "/",
+        labels = [], n=0;
+
+    for (n=0; n< a.$storage.order.labels.length ; n++){
+        labels.push(a.$storage.order.labels[n].processedLabel.id);
+    }
+
+    console.log(i), a.cart = {csrfmiddlewaretoken: d.get("csrftoken"), quantity: a.$storage.order.qty, labels: labels},
+        a.checkout = function () {
         d.put('test', 'value');
         console.log(d.getAll());
 

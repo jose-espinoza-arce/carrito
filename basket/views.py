@@ -6,6 +6,9 @@ from django import shortcuts
 
 from django.utils.http import is_safe_url
 
+from django.dispatch.dispatcher import receiver
+from oscar.apps.basket.signals import basket_addition
+
 from oscar.core.utils import safe_referrer
 
 from django.contrib import messages
@@ -66,7 +69,7 @@ class BasketAddView(CoreBasketAddView):#FormView):
     # http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
-        print 'in post'
+        print len(request.POST['labels[]'])
         self.product = shortcuts.get_object_or_404(
             self.product_model, pk=kwargs['pk'])
         return super(BasketAddView, self).post(request, *args, **kwargs)
@@ -92,18 +95,16 @@ class BasketAddView(CoreBasketAddView):#FormView):
     #     self.request.basket.add_product(
     #         form.product, form.cleaned_data['quantity'],
     #         form.cleaned_options())
-    #
     #     messages.success(self.request, self.get_success_message(form),
     #                      extra_tags='safe noicon')
     #
     #     # Check for additional offer messages
     #     apply_messages(self.request, offers_before)
-    #
     #     # Send signal for basket addition
     #     self.add_signal.send(
     #         sender=self, product=form.product, user=self.request.user,
     #         request=self.request)
-    #
+    # #
     #     return super(BasketAddView, self).form_valid(form)
 
     # def get_success_message(self, form):
@@ -125,3 +126,7 @@ class BasketAddView(CoreBasketAddView):#FormView):
         #print url
         #print url2
         return url2
+
+#@receiver(basket_addition)
+#def add_label():
+

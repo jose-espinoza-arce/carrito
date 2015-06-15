@@ -2,7 +2,8 @@ from django.conf.urls import include, url
 #from django.contrib import admin
 from dashboard.cmproducts.views import TequilaTypeViewSet, EventTypeViewSet, \
                             BoxPresentationViewSet, TemplateViewSet, \
-                            CustomImageViewSet, TagViewSet, TagBlob, StockRecordViewSet
+                            CustomImageViewSet, TagViewSet, TagBlob, StockRecordViewSet, \
+                            BasketViewSet, LineViewSet
 
 
 from rest_framework import routers, serializers, viewsets
@@ -38,6 +39,8 @@ router.register('labels', TagViewSet)
 router.register('templates', TemplateViewSet)
 router.register('uploadimages', CustomImageViewSet)
 router.register('stockrecords', StockRecordViewSet)
+router.register('basket', BasketViewSet)
+router.register('line', LineViewSet)
 
 urlpatterns = [
     # Examples:

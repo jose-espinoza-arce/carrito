@@ -22,11 +22,11 @@ class TequilaType(models.Model):
     name = models.CharField(max_length=60)
     bimage = models.ImageField(
         upload_to='images/tequila/',
-        default=os.path.join(settings.STATIC_ROOT,'generic_profile_image.png'),
+        default=os.path.join(settings.MEDIA_ROOT,'generic_profile_image.png'),
     )
     maskimage = models.ImageField(
         upload_to='images/tequila/',
-        default=os.path.join(settings.STATIC_ROOT,'generic_profile_image.png'),
+        default=os.path.join(settings.MEDIA_ROOT,'generic_profile_image.png'),
     )
 
     def __unicode__(self):
@@ -35,6 +35,10 @@ class TequilaType(models.Model):
 
 class EventType(models.Model):
     name = models.CharField(max_length=60)
+    eventimg = models.ImageField(
+        upload_to='images/evento/',
+        default=os.path.join(settings.MEDIA_ROOT, 'generic_profile_image.png'),
+    )
 
     def __unicode__(self):
         return self.name
@@ -43,6 +47,7 @@ class EventType(models.Model):
 class Template(models.Model):
     name = models.CharField(max_length=60, verbose_name='Nombre')
     etype = models.ForeignKey('EventType', default=1, related_name='templates', verbose_name='Tipo de evento', )
+    teqtype = models.ForeignKey('TequilaType', default=3, verbose_name='Tipo de tequila',)
     timage = models.ImageField(
         verbose_name='Plantilla',
         upload_to='images/templates/',

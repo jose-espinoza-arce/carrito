@@ -6,6 +6,8 @@ db.maravatio
 image_not_found.jpg
 api_requirements.txt
 maravatio/.ropeproject/
-.ropeproject/
+*/.ropeproject/
 static/
 dashboard/cmproducts/migrations/
+*/migrations/
+templates/

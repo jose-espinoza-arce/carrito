@@ -1,4 +1,5 @@
 from cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage
+from basket.models import Basket, Line
 from rest_framework import serializers
 
 
@@ -35,3 +36,4 @@ class CustomImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomImage
         fields = ('id', 'file', 'name')
+

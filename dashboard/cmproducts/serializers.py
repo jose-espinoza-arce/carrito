@@ -1,5 +1,6 @@
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage, Tag
 from catalogue.models import ProductClass, Product
+from basket.models import Basket, Line
 
 from oscar.apps.partner.models import StockRecord
 
@@ -76,7 +77,7 @@ class TequilaTypeSerializer(serializers.ModelSerializer):
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
-        fields = ('id', 'name', 'etype', 'timage',)
+        #fields = ('id', 'name', 'etype', 'timage',)
 
 
 class EventTypeSerializer(serializers.ModelSerializer):
@@ -84,7 +85,7 @@ class EventTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventType
-        fields = ('id', 'name',)# 'templates',)
+        #fields = ('id', 'name',)# 'templates',)
 
 
 class BoxPresentationSerializer(serializers.ModelSerializer):
@@ -94,6 +95,7 @@ class BoxPresentationSerializer(serializers.ModelSerializer):
                   'maxlabels', 'bottlerow', 'img_original_size',
                   'img_zoom_size', 'img_tag',
         )
+
 
 class StockRecordSerializer(serializers.ModelSerializer):
     class Meta:
@@ -105,3 +107,13 @@ class CustomImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomImage
         fields = ('id', 'file', 'name')
+
+
+class BasketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Basket
+
+
+class LineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Line

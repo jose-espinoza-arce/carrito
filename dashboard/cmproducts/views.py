@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dashboard.cmproducts.models import TequilaType, EventType, BoxPresentation, Template, CustomImage, Tag
-from dashboard.cmproducts.serializers import TequilaTypeSerializer, \
+from basket.models import Basket, Line
+from dashboard.cmproducts.serializers import TequilaTypeSerializer, BasketSerializer, LineSerializer, \
     EventTypeSerializer, BoxPresentationSerializer, \
     TemplateSerializer, CustomImageSerializer, TagSerializer, StockRecordSerializer
 
@@ -108,6 +109,15 @@ class TequilaTypeViewSet(viewsets.ModelViewSet):
     serializer_class = TequilaTypeSerializer
 
 
+class BasketViewSet(viewsets.ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer
+
+
+class LineViewSet(viewsets.ModelViewSet):
+    queryset = Line.objects.all()
+    serializer_class = LineSerializer
+
 
 class EventTypeViewSet(viewsets.ModelViewSet):
     queryset = EventType.objects.all()
@@ -139,6 +149,9 @@ class TemplateViewSet(viewsets.ModelViewSet):
     def list(self, request, event_pk=None, *args, **kwargs):
         if event_pk:
             queryset = self.queryset.filter(etype=event_pk)
+            if 'q' in request.GET.keys():
+                q = request.GET['q']
+                queryset = queryset.filter(teqtype=q)
         else:
             queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
