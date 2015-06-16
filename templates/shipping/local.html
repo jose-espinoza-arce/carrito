@@ -1,9 +1,0 @@
-{% load currency_filters %}
-{% load i18n %}
-
-{% blocktrans with cost=charge_per_item|currency %}
-Su pedido será entregado localmente.
-<p>
-    El costo será  de {{ cost }} por artículo.
-</p>
-{% endblocktrans %}
