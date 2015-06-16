@@ -11,3 +11,4 @@ static/
 dashboard/cmproducts/migrations/
 */migrations/
 templates/
+*/settings_local.py
