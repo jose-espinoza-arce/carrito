@@ -69,7 +69,7 @@ class BasketAddView(CoreBasketAddView):#FormView):
     # http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
-        print len(request.POST['labels[]'])
+        print request.POST.getlist('labels[]')
         self.product = shortcuts.get_object_or_404(
             self.product_model, pk=kwargs['pk'])
         return super(BasketAddView, self).post(request, *args, **kwargs)
