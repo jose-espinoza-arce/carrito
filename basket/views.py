@@ -74,38 +74,10 @@ class BasketAddView(CoreBasketAddView):#FormView):
             self.product_model, pk=kwargs['pk'])
         return super(BasketAddView, self).post(request, *args, **kwargs)
 
-    # def get_form_kwargs(self):
-    #     kwargs = super(BasketAddView, self).get_form_kwargs()
-    #     kwargs['basket'] = self.request.basket
-    #     kwargs['product'] = self.product
-    #     return kwargs
+    def form_valid(self, form):
+        print self.request.basket
 
-    # def form_invalid(self, form):
-    #     msgs = []
-    #     for error in form.errors.values():
-    #         msgs.append(error.as_text())
-    #     clean_msgs = [m.replace('* ', '') for m in msgs if m.startswith('* ')]
-    #     messages.error(self.request, ",".join(clean_msgs))
-    #
-    #     return redirect_to_referrer(self.request, 'basket:summary')
-
-    # def form_valid(self, form):
-    #     offers_before = self.request.basket.applied_offers()
-    #
-    #     self.request.basket.add_product(
-    #         form.product, form.cleaned_data['quantity'],
-    #         form.cleaned_options())
-    #     messages.success(self.request, self.get_success_message(form),
-    #                      extra_tags='safe noicon')
-    #
-    #     # Check for additional offer messages
-    #     apply_messages(self.request, offers_before)
-    #     # Send signal for basket addition
-    #     self.add_signal.send(
-    #         sender=self, product=form.product, user=self.request.user,
-    #         request=self.request)
-    # #
-    #     return super(BasketAddView, self).form_valid(form)
+        return super(BasketAddView, self).form_valid(form)
 
     # def get_success_message(self, form):
     #     return render_to_string(

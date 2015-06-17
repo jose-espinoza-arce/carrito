@@ -5,6 +5,7 @@ import os
 import StringIO
 from PIL import Image
 
+from catalogue.models import ProductClass
 
 class Tag(models.Model):
     name = models.CharField(max_length=60, blank=True)
@@ -47,7 +48,7 @@ class EventType(models.Model):
 class Template(models.Model):
     name = models.CharField(max_length=60, verbose_name='Nombre')
     etype = models.ForeignKey('EventType', default=1, related_name='templates', verbose_name='Tipo de evento', )
-    teqtype = models.ForeignKey('TequilaType', default=3, verbose_name='Tipo de tequila',)
+    teqtype = models.ForeignKey(ProductClass, default=3, verbose_name='Tipo de tequila',)
     timage = models.ImageField(
         verbose_name='Plantilla',
         upload_to='images/templates/',
