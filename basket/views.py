@@ -1,4 +1,4 @@
-from oscar.apps.basket.views import BasketAddView as CoreBasketAddView
+from oscar.apps.basket.views import BasketAddView as CoreBasketAddView, apply_messages
 
 from django.core.urlresolvers import reverse
 
@@ -15,45 +15,9 @@ from django.contrib import messages
 #from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
+from dashboard.cmproducts.models import Tag
 
-# def get_messages(basket, offers_before, offers_after,
-#                  include_buttons=True):
-#     """
-#     Return the messages about offer changes
-#     """
-#     # Look for changes in offers
-#     offers_lost = set(offers_before.keys()).difference(
-#         set(offers_after.keys()))
-#     offers_gained = set(offers_after.keys()).difference(
-#         set(offers_before.keys()))
-#
-#     # Build a list of (level, msg) tuples
-#     offer_messages = []
-#     for offer_id in offers_lost:
-#         offer = offers_before[offer_id]
-#         msg = render_to_string(
-#             'basket/messages/offer_lost.html',
-#             {'offer': offer})
-#         offer_messages.append((
-#             messages.WARNING, msg))
-#     for offer_id in offers_gained:
-#         offer = offers_after[offer_id]
-#         msg = render_to_string(
-#             'basket/messages/offer_gained.html',
-#             {'offer': offer})
-#         offer_messages.append((
-#             messages.SUCCESS, msg))
-#
-#     # We use the 'include_buttons' parameter to determine whether to show the
-#     # 'Checkout now' buttons.  We don't want to show these on the basket page.
-#     msg = render_to_string(
-#         'basket/messages/new_total.html',
-#         {'basket': basket,
-#          'include_buttons': False})#change for include_buttoms
-#     offer_messages.append((
-#         messages.INFO, msg))
-#
-#     return offer_messages
+
 
 
 
@@ -69,21 +33,57 @@ class BasketAddView(CoreBasketAddView):#FormView):
     # http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
+        print 'my.basket.views.BasketAddView.post'
         print request.POST.getlist('labels[]')
         self.product = shortcuts.get_object_or_404(
             self.product_model, pk=kwargs['pk'])
         return super(BasketAddView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        print self.request.basket
 
-        return super(BasketAddView, self).form_valid(form)
+        offers_before = self.request.basket.applied_offers()
 
-    # def get_success_message(self, form):
-    #     return render_to_string(
-    #         'basket/messages/addition.html',
-    #         {'product': form.product,
-    #          'quantity': form.cleaned_data['quantity']})
+        self.request.basket.add_product(
+            form.product, form.cleaned_data['quantity'],
+            form.cleaned_options())
+
+        messages.success(self.request, self.get_success_message(form),
+                         extra_tags='safe noicon')
+
+        # Check for additional offer messages
+        apply_messages(self.request, offers_before)
+
+        # Send signal for basket addition
+        self.add_signal.send(
+            sender=self, product=form.product, user=self.request.user,
+            request=self.request)
+
+        print 'my.basket.views.BasketAddView.form_valid'
+        print dir(self.request.basket)
+        print self.request.basket.all_lines()
+        print super(BasketAddView, self)
+
+        lines = self.request.basket.all_lines()
+
+        assert len(lines) == 1, "Hay mas de dos tipos de productos en la canasta"
+        try:
+            line = lines[-1]
+        except:
+            line = lines[0]
+        labels = self.request.POST.getlist('labels[]')
+
+        assert len(labels) > 0, 'No hay etiquetas personalizadas'
+
+        for label_id in labels:
+            label = Tag.objects.get(pk=label_id)
+            label.line = line
+            label.save()
+            print label
+
+
+        return super(CoreBasketAddView, self).form_valid(form)
+
+
 
     def get_success_url(self):
         post_url = self.request.POST.get('next')

@@ -6,10 +6,15 @@ import StringIO
 from PIL import Image
 
 from catalogue.models import ProductClass
+from basket.models import Line
+
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=60, blank=True)
     uploadimage = models.ForeignKey('CustomImage', default=1)
+    line = models.ForeignKey(Line, null=True, blank=True)
+    template = models.ForeignKey('Template', null=True, blank=True)
     label = models.ImageField(
         upload_to='images/tags/',
         default='images/generic_image.png',
