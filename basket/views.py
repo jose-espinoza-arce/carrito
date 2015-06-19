@@ -65,14 +65,14 @@ class BasketAddView(CoreBasketAddView):#FormView):
 
         lines = self.request.basket.all_lines()
 
-        assert len(lines) == 1, "Hay mas de dos tipos de productos en la canasta"
+        #assert len(lines) == 1, "Hay mas de dos tipos de productos en la canasta"
         try:
             line = lines[-1]
         except:
             line = lines[0]
         labels = self.request.POST.getlist('labels[]')
 
-        assert len(labels) > 0, 'No hay etiquetas personalizadas'
+        #assert len(labels) > 0, 'No hay etiquetas personalizadas'
 
         for label_id in labels:
             label = Tag.objects.get(pk=label_id)

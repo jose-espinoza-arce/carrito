@@ -6,6 +6,10 @@ class HomeView(CoreHomeView):
     template_name = 'promotions/index.html'
 
     def get(self, request, *args, **kwargs):
+        #print request.basket
+        request.basket.flush()
+        #print request.basket
+
         context = self.get_context_data(**kwargs)
         request.META["CSRF_COOKIE_USED"] = True
         return self.render_to_response(context)
