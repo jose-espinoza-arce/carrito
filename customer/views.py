@@ -17,4 +17,4 @@ class AccountAuthView(CoreAccountAuthView):
         return settings.LOGIN_REDIRECT_URL
 
 class ProfileDeleteView(CoreProfileDeleteView):
-    page_title = _('Eliminar Peril')
+    page_title = 'Eliminar Peril'
