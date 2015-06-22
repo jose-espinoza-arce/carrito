@@ -12,11 +12,14 @@ from oscar.apps.order.models import BillingAddress
 from django.utils import six
 from django.conf import settings
 
+from dashboard.cmproducts.models import Tag
+
 #from paypal.pro.helpers import PayPalWPP
 
 from .forms import BillingAddressForm, PaymentForm
 
 from paypal.standard.forms import PayPalPaymentsForm
+
 
 # Customise the core PaymentDetailsView to integrate Datacash
 class PaymentDetailsView(views.PaymentDetailsView):
@@ -32,6 +35,17 @@ class PaymentDetailsView(views.PaymentDetailsView):
         # Ensure newly instantiated instances of the bankcard and billing
         # address forms are passed to the template context (when they aren't
         # already specified).
+        print 'my.checkout.PaymentDetailView'
+        print self.request.basket
+
+        if 'labels' not in kwargs:
+            lines = self.request.basket.all_lines()
+            try:
+                line = lines[-1]
+            except:
+                line = lines[0]
+            labels = Tag.objects.filter(line=line)
+            ctx['labels'] = labels
         if 'bankcard_form' not in kwargs:
             ctx['bankcard_form'] = BankcardForm()
         if 'paypal_form' not in kwargs:

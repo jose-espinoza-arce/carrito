@@ -8,8 +8,8 @@ from babel.numbers import format_currency
 register = template.Library()
 
 
-@register.filter(name='local_currency')
-def localcurrency(value, currency=None):
+@register.filter(name='currency')
+def currency(value, currency=None):
     """
     Format decimal value as currency
     """
@@ -24,4 +24,5 @@ def localcurrency(value, currency=None):
         'format': getattr(settings, 'OSCAR_CURRENCY_FORMAT', None),
         'locale': 'en_US',
     }
-    return format_currency(value, **kwargs)
+    #return format_currency(value, **kwargs)
+    return '$ %s MXN' % value
