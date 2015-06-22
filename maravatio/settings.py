@@ -26,10 +26,10 @@ TEMPLATE_DIRS = (
 
 
 EMAIL_USE_TLS = False
-EMAIL_HOST = 'drplet1.haushaus.mx'
+EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'angel@haushaus.mx'
-EMAIL_HOST_PASSWORD = 'back2014'
+EMAIL_HOST_USER = 'jose@haushaus.mx'
+EMAIL_HOST_PASSWORD = 'password'
 #DEFAULT_FROM_EMAIL = 'my gmail account'
 #DEFAULT_TO_EMAIL = 'to email'
 
