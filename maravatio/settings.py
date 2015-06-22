@@ -23,6 +23,17 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
     OSCAR_MAIN_TEMPLATE_DIR,
 )
+
+
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'drplet1.haushaus.mx'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'angel@haushaus.mx'
+EMAIL_HOST_PASSWORD = 'back2014'
+#DEFAULT_FROM_EMAIL = 'my gmail account'
+#DEFAULT_TO_EMAIL = 'to email'
+
+
 #OSCAR_MAIN_TEMPLATE_DIR = os.path.join(BASE_DIR,
 #                                       '..',
 #                                       'carritoenv', 'local',
