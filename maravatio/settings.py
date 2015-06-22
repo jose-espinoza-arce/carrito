@@ -73,6 +73,11 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 
+from django.template.loader import
+
+add_to_builtins('myapp.templatetags.mytagslib')
+
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.template.context_processors.debug',
     'django.template.context_processors.request',
