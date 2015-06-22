@@ -38,14 +38,14 @@ class PaymentDetailsView(views.PaymentDetailsView):
         print 'my.checkout.PaymentDetailView'
         print self.request.basket
 
-        if 'labels' not in kwargs:
+        if 'label' not in kwargs:
             lines = self.request.basket.all_lines()
             try:
                 line = lines[-1]
             except:
                 line = lines[0]
             labels = Tag.objects.filter(line=line)
-            ctx['labels'] = labels
+            ctx['label'] = labels[0]
         if 'bankcard_form' not in kwargs:
             ctx['bankcard_form'] = BankcardForm()
         if 'paypal_form' not in kwargs:
@@ -327,3 +327,19 @@ class PaymentDetailsView(views.PaymentDetailsView):
         # Also record payment event
         self.add_payment_event(
             'pre-auth', total.incl_tax, reference=paypal_ref)
+
+class ThankYouView(views.ThankYouView):
+    def get_context_data(self, **kwargs):
+        ctx = super(ThankYouView, self).get_context_data(**kwargs)
+        print dir(ctx['order'])
+        if 'label' not in kwargs:
+            lines = ctx['order'].basket.all_lines()
+            print lines
+            try:
+                line = lines[-1]
+            except:
+                line = lines[0]
+            labels = Tag.objects.filter(line=line)
+            ctx['label'] = labels[0]
+
+        return ctx
